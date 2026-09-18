@@ -1,0 +1,1792 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ЖИ-ді білім беруде қолдану — мұғалімдерге арналған курс</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#152238;
+  --ink-soft:#3c4a63;
+  --paper:#F6F3EC;
+  --paper-raised:#FFFFFF;
+  --line:#DCD5C4;
+  --accent:#B08B2E;
+  --accent-soft:#EFE3C2;
+  --teal:#1F6F6B;
+  --teal-soft:#DDEEEC;
+  --shadow: 0 1px 0 rgba(21,34,56,0.06);
+  --radius: 3px;
+}
+:root:not([data-theme="light"]){
+  @media (prefers-color-scheme: dark){
+    --ink:#EDE7D8;
+    --ink-soft:#B9B2A0;
+    --paper:#171B24;
+    --paper-raised:#1F2430;
+    --line:#333A46;
+    --accent:#D9B65C;
+    --accent-soft:#3A331E;
+    --teal:#5FBDB6;
+    --teal-soft:#1B3634;
+  }
+}
+:root[data-theme="dark"]{
+  --ink:#EDE7D8;
+  --ink-soft:#B9B2A0;
+  --paper:#171B24;
+  --paper-raised:#1F2430;
+  --line:#333A46;
+  --accent:#D9B65C;
+  --accent-soft:#3A331E;
+  --teal:#5FBDB6;
+  --teal-soft:#1B3634;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  line-height:1.55;
+  min-height:100vh;
+}
+h1,h2,h3,.brand-title,.module-num{
+  font-family:'Lora',Georgia,'Times New Roman',serif;
+}
+a{color:var(--teal);}
+p{margin:0 0 12px;}
+ul,ol{margin:0 0 12px;padding-left:22px;}
+li{margin-bottom:6px;}
+
+/* ---------- Layout shell ---------- */
+.app{
+  display:flex;
+  min-height:100vh;
+}
+.sidebar{
+  width:280px;
+  flex-shrink:0;
+  background:var(--paper-raised);
+  border-right:1px solid var(--line);
+  padding:22px 0 22px;
+  position:sticky;
+  top:0;
+  height:100vh;
+  overflow-y:auto;
+}
+.brand{
+  padding:0 20px 18px;
+  border-bottom:1px solid var(--line);
+  margin-bottom:14px;
+}
+.brand-eyebrow{
+  font-size:11px;
+  color:var(--teal);
+  font-weight:600;
+  letter-spacing:0.02em;
+}
+.brand-title{
+  font-size:19px;
+  font-weight:600;
+  margin-top:4px;
+  color:var(--ink);
+}
+.progress-wrap{
+  padding:0 20px 16px;
+  border-bottom:1px solid var(--line);
+  margin-bottom:8px;
+}
+.progress-label{
+  font-size:12px;
+  color:var(--ink-soft);
+  margin-bottom:6px;
+  display:flex;
+  justify-content:space-between;
+}
+.progress-track{
+  height:6px;
+  background:var(--accent-soft);
+  border-radius:99px;
+  overflow:hidden;
+}
+.progress-fill{
+  height:100%;
+  background:var(--teal);
+  border-radius:99px;
+  transition:width 0.4s ease;
+}
+.nav-list{list-style:none;margin:0;padding:6px 10px;}
+.nav-item{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:9px 10px;
+  border-radius:var(--radius);
+  cursor:pointer;
+  font-size:13.5px;
+  color:var(--ink-soft);
+  border:1px solid transparent;
+}
+.nav-item:hover{background:var(--accent-soft);}
+.nav-item.active{
+  background:var(--teal-soft);
+  color:var(--ink);
+  border-color:var(--teal);
+  font-weight:600;
+}
+.nav-num{
+  width:22px;height:22px;flex-shrink:0;
+  border-radius:50%;
+  border:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;
+  font-family:'Lora',serif;
+  color:var(--ink-soft);
+  background:var(--paper);
+}
+.nav-item.active .nav-num{
+  background:var(--teal);
+  border-color:var(--teal);
+  color:#fff;
+}
+.nav-item.done .nav-num{
+  background:var(--accent);
+  border-color:var(--accent);
+  color:#fff;
+}
+.nav-item.done .nav-num::after{content:"✓";}
+.nav-item.done .nav-num{font-size:0;}
+.nav-item.done .nav-num::after{font-size:11px;}
+
+/* ---------- Main ---------- */
+.main{
+  flex:1;
+  min-width:0;
+  padding:34px 40px 80px;
+  max-width:900px;
+}
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:26px;
+  flex-wrap:wrap;
+  gap:10px;
+}
+.crumb{
+  font-size:12px;
+  color:var(--ink-soft);
+  text-transform:none;
+}
+.module-header{
+  margin-bottom:28px;
+  padding-bottom:22px;
+  border-bottom:2px solid var(--ink);
+}
+.module-eyebrow{
+  font-size:12px;
+  color:var(--teal);
+  font-weight:600;
+}
+.module-title{
+  font-size:32px;
+  font-weight:700;
+  margin:6px 0 0;
+  line-height:1.2;
+}
+.section-block{
+  margin-bottom:26px;
+  padding-bottom:22px;
+  border-bottom:1px solid var(--line);
+}
+.section-block:last-of-type{border-bottom:none;}
+.section-head{
+  display:flex;
+  align-items:baseline;
+  gap:10px;
+  margin-bottom:10px;
+}
+.section-idx{
+  font-family:'Lora',serif;
+  font-size:13px;
+  color:var(--accent);
+  font-weight:600;
+  flex-shrink:0;
+}
+.section-title{
+  font-size:17px;
+  font-weight:600;
+  color:var(--ink);
+}
+.section-body{
+  font-size:14.5px;
+  color:var(--ink-soft);
+  padding-left:26px;
+}
+.section-body b{color:var(--ink);font-weight:600;}
+.section-body p{margin:0 0 10px;}
+
+.figure{
+  background:var(--paper-raised);
+  border:1px solid var(--line);
+  border-radius:6px;
+  padding:18px 18px 14px;
+  margin-bottom:28px;
+  box-shadow:var(--shadow);
+}
+.figure svg{
+  width:100%;
+  height:auto;
+  display:block;
+}
+.figure-caption{
+  display:flex;
+  gap:8px;
+  align-items:baseline;
+  margin-top:12px;
+  padding-top:12px;
+  border-top:1px solid var(--line);
+  font-size:12.5px;
+  color:var(--ink-soft);
+}
+.figure-tag{
+  font-weight:700;
+  color:var(--teal);
+  font-family:'Lora',serif;
+  flex-shrink:0;
+  white-space:nowrap;
+}
+
+.prompt-block{
+  background:var(--ink);
+  color:#EFE9D8;
+  border-radius:var(--radius);
+  padding:14px 16px;
+  font-size:13px;
+  position:relative;
+  margin:8px 0;
+}
+.prompt-block b{color:#EFE9D8 !important;}
+.prompt-block pre{
+  white-space:pre-wrap;
+  font-family:'SFMono-Regular',Consolas,monospace;
+  margin:8px 0 0;
+  line-height:1.5;
+  color:#DCD3B8;
+  font-size:12.5px;
+}
+.copy-btn{
+  position:absolute;
+  top:10px;right:10px;
+  background:var(--teal);
+  color:#fff;
+  border:none;
+  border-radius:var(--radius);
+  padding:5px 10px;
+  font-size:11.5px;
+  cursor:pointer;
+  font-family:'Inter',sans-serif;
+  font-weight:600;
+}
+.copy-btn:hover{opacity:0.88;}
+.copy-btn.copied{background:var(--accent);}
+
+.compare p{
+  padding:8px 12px;
+  border-radius:var(--radius);
+  margin-bottom:8px;
+}
+.compare p:first-child{background:#F3D9D9;color:#5A2323;}
+:root[data-theme="dark"] .compare p:first-child{background:#3A2323;color:#E8B9B9;}
+.compare p:last-child{background:var(--teal-soft);color:var(--ink);}
+
+.footer-nav{
+  display:flex;
+  justify-content:space-between;
+  margin-top:34px;
+  gap:12px;
+}
+.nav-btn{
+  padding:11px 18px;
+  border-radius:var(--radius);
+  border:1px solid var(--line);
+  background:var(--paper-raised);
+  color:var(--ink);
+  font-family:'Inter',sans-serif;
+  font-size:13.5px;
+  font-weight:600;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.nav-btn:hover{border-color:var(--teal);color:var(--teal);}
+.nav-btn.primary{
+  background:var(--teal);
+  border-color:var(--teal);
+  color:#fff;
+}
+.nav-btn.primary:hover{opacity:0.9;color:#fff;}
+.nav-btn:disabled{opacity:0.35;cursor:not-allowed;}
+.mark-done{
+  background:none;
+  border:1px solid var(--accent);
+  color:var(--accent);
+  padding:8px 14px;
+  border-radius:var(--radius);
+  font-size:12.5px;
+  font-weight:600;
+  cursor:pointer;
+  font-family:'Inter',sans-serif;
+}
+.mark-done.on{background:var(--accent);color:#fff;}
+
+.menu-toggle{display:none;}
+
+/* ============================================================
+   AUTH / ADMIN LAYER (added — course design/content untouched)
+   ============================================================ */
+.auth-wrap{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+}
+.auth-card{
+  width:100%;
+  max-width:420px;
+  background:var(--paper-raised);
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:32px 30px;
+  box-shadow:var(--shadow);
+}
+.auth-eyebrow{
+  font-size:11px;
+  color:var(--teal);
+  font-weight:600;
+  letter-spacing:0.02em;
+}
+.auth-title{
+  font-size:22px;
+  font-weight:700;
+  margin:6px 0 22px;
+}
+.auth-tabs{
+  display:flex;
+  gap:6px;
+  margin-bottom:20px;
+  border-bottom:1px solid var(--line);
+}
+.auth-tab{
+  flex:1;
+  text-align:center;
+  padding:10px 6px;
+  font-size:13.5px;
+  font-weight:600;
+  color:var(--ink-soft);
+  cursor:pointer;
+  border-bottom:2px solid transparent;
+  margin-bottom:-1px;
+}
+.auth-tab.active{color:var(--teal);border-color:var(--teal);}
+.field-label{
+  display:block;
+  font-size:12.5px;
+  font-weight:600;
+  color:var(--ink);
+  margin:0 0 6px;
+}
+.field-input{
+  width:100%;
+  padding:10px 12px;
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  background:var(--paper);
+  color:var(--ink);
+  font-family:'Inter',sans-serif;
+  font-size:13.5px;
+  margin-bottom:14px;
+}
+.field-input:focus{outline:2px solid var(--teal);outline-offset:1px;}
+.auth-btn{
+  width:100%;
+  padding:11px;
+  border:none;
+  border-radius:var(--radius);
+  background:var(--teal);
+  color:#fff;
+  font-family:'Inter',sans-serif;
+  font-size:13.5px;
+  font-weight:700;
+  cursor:pointer;
+  margin-top:4px;
+}
+.auth-btn:hover{opacity:0.9;}
+.auth-btn:disabled{opacity:0.5;cursor:not-allowed;}
+.auth-msg{
+  font-size:12.5px;
+  padding:10px 12px;
+  border-radius:var(--radius);
+  margin-bottom:14px;
+  display:none;
+}
+.auth-msg.show{display:block;}
+.auth-msg.info{background:var(--teal-soft);color:var(--ink);}
+.auth-msg.error{background:#F3D9D9;color:#5A2323;}
+:root[data-theme="dark"] .auth-msg.error{background:#3A2323;color:#E8B9B9;}
+
+.status-wrap{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+}
+.status-card{
+  max-width:460px;
+  text-align:center;
+  background:var(--paper-raised);
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:36px 30px;
+  box-shadow:var(--shadow);
+}
+.status-icon{
+  width:56px;height:56px;
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 16px;
+  font-size:26px;
+}
+.status-icon.pending{background:var(--accent-soft);color:var(--accent);}
+.status-icon.rejected{background:#F3D9D9;color:#8a2f2f;}
+.status-title{font-size:19px;font-weight:700;margin-bottom:8px;}
+.status-text{font-size:13.5px;color:var(--ink-soft);margin-bottom:20px;}
+
+.session-bar{
+  display:flex;
+  justify-content:flex-end;
+  align-items:center;
+  gap:10px;
+  padding:10px 20px;
+  background:var(--paper-raised);
+  border-bottom:1px solid var(--line);
+  font-size:12.5px;
+}
+.session-user{color:var(--ink-soft);margin-right:auto;}
+.session-btn{
+  padding:6px 12px;
+  border-radius:var(--radius);
+  border:1px solid var(--line);
+  background:var(--paper);
+  color:var(--ink);
+  font-family:'Inter',sans-serif;
+  font-size:12px;
+  font-weight:600;
+  cursor:pointer;
+}
+.session-btn:hover{border-color:var(--teal);color:var(--teal);}
+.session-btn.admin-btn{border-color:var(--accent);color:var(--accent);}
+
+.admin-wrap{padding:30px 40px 60px;max-width:1000px;margin:0 auto;}
+.admin-title{font-size:24px;font-weight:700;margin-bottom:4px;}
+.admin-sub{font-size:13px;color:var(--ink-soft);margin-bottom:24px;}
+.admin-table{
+  width:100%;
+  border-collapse:collapse;
+  background:var(--paper-raised);
+  border:1px solid var(--line);
+  border-radius:6px;
+  overflow:hidden;
+  font-size:13px;
+  margin-bottom:36px;
+}
+.admin-table th{
+  text-align:left;
+  background:var(--paper);
+  color:var(--ink-soft);
+  font-weight:600;
+  font-size:11.5px;
+  padding:10px 12px;
+  border-bottom:1px solid var(--line);
+}
+.admin-table td{
+  padding:10px 12px;
+  border-bottom:1px solid var(--line);
+  color:var(--ink);
+  vertical-align:middle;
+}
+.badge{
+  display:inline-block;
+  padding:3px 9px;
+  border-radius:99px;
+  font-size:11px;
+  font-weight:600;
+}
+.badge.pending{background:var(--accent-soft);color:var(--accent);}
+.badge.approved{background:var(--teal-soft);color:var(--teal);}
+.badge.rejected{background:#F3D9D9;color:#8a2f2f;}
+.admin-action-btn{
+  padding:5px 10px;
+  border-radius:var(--radius);
+  border:none;
+  font-size:11.5px;
+  font-weight:700;
+  cursor:pointer;
+  margin-right:6px;
+  font-family:'Inter',sans-serif;
+}
+.approve-btn{background:var(--teal);color:#fff;}
+.reject-btn{background:#B0433F;color:#fff;}
+.admin-action-btn:hover{opacity:0.88;}
+.admin-section-title{font-size:16px;font-weight:700;margin:0 0 4px;}
+.media-admin-card{
+  background:var(--paper-raised);
+  border:1px solid var(--line);
+  border-radius:6px;
+  padding:20px;
+}
+.media-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px;}
+.media-row select, .media-row input[type=file]{
+  padding:8px 10px;
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  background:var(--paper);
+  color:var(--ink);
+  font-family:'Inter',sans-serif;
+  font-size:12.5px;
+}
+.media-list-item{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:8px 0;
+  border-bottom:1px solid var(--line);
+  font-size:12.5px;
+}
+.media-thumb{width:60px;height:40px;object-fit:cover;border-radius:4px;border:1px solid var(--line);}
+.hidden{display:none !important;}
+
+@media (max-width: 860px){
+  .sidebar{
+    position:fixed;
+    left:-100%;
+    top:0;
+    z-index:50;
+    width:82vw;
+    max-width:320px;
+    transition:left 0.25s ease;
+    box-shadow:2px 0 18px rgba(0,0,0,0.25);
+  }
+  .sidebar.open{left:0;}
+  .main{padding:20px 16px 70px;max-width:100%;}
+  .module-title{font-size:24px;}
+  .section-body{padding-left:0;}
+  .media-note{padding-left:0;}
+  .menu-toggle{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    background:var(--paper-raised);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:8px 12px;
+    font-size:13px;
+    font-weight:600;
+    color:var(--ink);
+    cursor:pointer;
+  }
+  .overlay{
+    display:none;
+    position:fixed;inset:0;
+    background:rgba(0,0,0,0.4);
+    z-index:40;
+  }
+  .overlay.show{display:block;}
+}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+<!-- ====== AUTH SCREEN (login / register) ====== -->
+<div id="authScreen" class="auth-wrap">
+  <div class="auth-card">
+    <div class="auth-eyebrow">МҰҒАЛІМДЕРГЕ АРНАЛҒАН КУРС</div>
+    <div class="auth-title">ЖИ-ді білім беруде қолдану</div>
+    <div class="auth-tabs">
+      <div class="auth-tab active" id="tabLogin" onclick="switchAuthTab('login')">Кіру</div>
+      <div class="auth-tab" id="tabRegister" onclick="switchAuthTab('register')">Тіркелу</div>
+    </div>
+
+    <div class="auth-msg" id="authMsg"></div>
+
+    <form id="loginForm" onsubmit="return handleLogin(event)">
+      <label class="field-label">Email</label>
+      <input class="field-input" type="email" id="loginEmail" required autocomplete="email">
+      <label class="field-label">Құпиясөз</label>
+      <input class="field-input" type="password" id="loginPassword" required autocomplete="current-password">
+      <button class="auth-btn" type="submit" id="loginBtn">Кіру</button>
+    </form>
+
+    <form id="registerForm" class="hidden" onsubmit="return handleRegister(event)">
+      <label class="field-label">Аты-жөні</label>
+      <input class="field-input" type="text" id="regName" required autocomplete="name">
+      <label class="field-label">Email</label>
+      <input class="field-input" type="email" id="regEmail" required autocomplete="email">
+      <label class="field-label">Құпиясөз</label>
+      <input class="field-input" type="password" id="regPassword" required minlength="6" autocomplete="new-password">
+      <label class="field-label">Құпиясөзді қайталаңыз</label>
+      <input class="field-input" type="password" id="regPassword2" required minlength="6" autocomplete="new-password">
+      <button class="auth-btn" type="submit" id="registerBtn">Тіркелу</button>
+    </form>
+  </div>
+</div>
+
+<!-- ====== PENDING / REJECTED STATUS SCREEN ====== -->
+<div id="statusScreen" class="status-wrap hidden">
+  <div class="status-card">
+    <div class="status-icon pending" id="statusIcon">⏳</div>
+    <div class="status-title" id="statusTitle">Күтуде</div>
+    <div class="status-text" id="statusText"></div>
+    <button class="session-btn" onclick="handleLogout()">Шығу</button>
+  </div>
+</div>
+
+<!-- ====== ADMIN PANEL ====== -->
+<div id="adminScreen" class="hidden">
+  <div class="session-bar">
+    <span class="session-user" id="adminSessionUser"></span>
+    <button class="session-btn" onclick="showCourseFromAdmin()">← Курсқа оралу</button>
+    <button class="session-btn" onclick="handleLogout()">Шығу</button>
+  </div>
+  <div class="admin-wrap">
+    <div class="admin-title">Admin Panel</div>
+    <div class="admin-sub">Тіркелген қолданушыларды мақұлдау / қабылдамау</div>
+    <table class="admin-table">
+      <thead>
+        <tr><th>Аты-жөні</th><th>Email</th><th>Тіркелген күні</th><th>Статус</th><th>Әрекет</th></tr>
+      </thead>
+      <tbody id="adminUsersBody">
+        <tr><td colspan="5">Жүктелуде…</td></tr>
+      </tbody>
+    </table>
+
+    <div class="admin-section-title">Модуль фото / видео қосу</div>
+    <div class="admin-sub">Тек әкімші көре және өзгерте алады. Таңдалған модульдің иллюстрациясы осы файлмен ауыстырылады.</div>
+    <div class="media-admin-card">
+      <div class="media-row">
+        <select id="mediaModuleSelect"></select>
+        <input type="file" id="mediaFileInput" accept="image/*,video/*">
+        <button class="auth-btn" style="width:auto;margin:0;" onclick="handleMediaUpload()">Жүктеу</button>
+      </div>
+      <div class="auth-msg" id="mediaMsg"></div>
+      <div id="mediaList"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== COURSE (unchanged) ====== -->
+<div id="appRoot" class="hidden">
+<div class="session-bar">
+  <span class="session-user" id="courseSessionUser"></span>
+  <button class="session-btn admin-btn hidden" id="adminPanelBtn" onclick="showAdminPanel()">Admin Panel</button>
+  <button class="session-btn" onclick="handleLogout()">Шығу</button>
+</div>
+<div class="app">
+  <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-eyebrow">МҰҒАЛІМДЕРГЕ АРНАЛҒАН КУРС</div>
+      <div class="brand-title">ЖИ-ді білім беруде қолдану</div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Прогресс</span><span id="progressText">0 / 15</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    </div>
+    <ul class="nav-list" id="navList"></ul>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <button class="menu-toggle" onclick="openSidebar()">☰ Модульдер</button>
+      <div class="crumb" id="crumb"></div>
+    </div>
+
+    <div id="content"></div>
+
+    <div class="footer-nav">
+      <button class="nav-btn" id="prevBtn" onclick="goPrev()">← Алдыңғы модуль</button>
+      <button class="mark-done" id="doneBtn" onclick="toggleDone()">Аяқталды деп белгілеу</button>
+      <button class="nav-btn primary" id="nextBtn" onclick="goNext()">Келесі модуль →</button>
+    </div>
+  </main>
+</div>
+</div>
+
+<script>
+const MODULES = [
+{
+  num:1,
+  title:"Жасанды интеллект дегеніміз не?",
+  sections:{
+    def:`<p><b>Жасанды интеллект (ЖИ)</b> — адам сияқты ойлау, тіл түсіну, мәтін жазу, сурет тану сияқты тапсырмаларды орындауға үйретілген компьютерлік жүйе. <b>Генеративті ЖИ</b> — дайын жауапты іздеп бермей, жаңа мәтін, сурет, видео, код <i>жасап шығаратын</i> ЖИ түрі.</p>`,
+    full:`<p><b>Үлкен тілдік модель (Large Language Model, LLM)</b> — миллиардтаған мәтін үлгісінен үйренген, сол негізде келесі сөзді болжап жауап құрастыратын нейрондық желі. <b>ChatGPT</b> — осындай LLM негізіндегі ең танымал чат-құрал; OpenAI компаниясы шығарған.</p>
+    <p>ЖИ жауапты «біледі» дейтіндей емес, ол сұрағыңыздағы контекст пен үйренген статистикалық үлгілер негізінде <i>ең ықтимал жалғасты</i> генерациялайды. Сондықтан жауап әрдайым 100% дұрыс бола бермейді — бұл туралы 15-модульде толығырақ.</p>`,
+    terms:`<ul><li><b>ЖИ (AI)</b> — жасанды интеллект</li><li><b>LLM</b> — үлкен тілдік модель</li><li><b>Генерация</b> — жаңа мазмұн жасау</li><li><b>Промпт (prompt)</b> — ЖИ-ге берілетін тапсырма-сұрау</li><li><b>Токен</b> — модельдің өңдейтін мәтін бөлшегі (сөз не буын)</li></ul>`,
+    how:`<p>Сіз мәтін жазасыз (prompt) → модель оны токендерге бөледі → үйренген үлгілер негізінде ең сәйкес келесі токенді біртіндеп болжап, жауапты «құрастырады» → жауап сізге бірден немесе ағынмен (streaming) шығады.</p>`,
+    why:`<p>Мұғалімге ЖИ уақыт үнемдейді: сабақ жоспарын, тапсырманы, тестті, хатты минуттар ішінде дайындауға көмектеседі. Ол мұғалімді алмастырмайды, тек қана қайталанатын, механикалық жұмысты жеңілдетеді.</p>`,
+    example:`<p><b>Мысал:</b> Биология мұғалімі «фотосинтез» тақырыбын 7-сынып оқушысына түсінікті етіп 5 сөйлеммен жаздыртады. ЖИ бірнеше секундта қарапайым тілде түсіндірме береді, мұғалім оны сабақта пайдаланады.</p>`,
+    prompt:`<div class="prompt-block"><b>Дайын prompt:</b><pre>Сен — тәжірибелі биология мұғалімісің.
+7-сынып оқушысына арналған, "фотосинтез" тақырыбын
+күнделікті өмірден мысалдар қолданып,
+5 қарапайым сөйлеммен түсіндір.
+Күрделі терминдерді қолданба.</pre></div>`,
+    promptExplain:`<ul><li><b>«Сен — тәжірибелі биология мұғалімісің»</b> — рөл беру, жауап сапасын арттырады</li><li><b>«7-сынып оқушысына арналған»</b> — аудитория, тілдің күрделілігін анықтайды</li><li><b>«5 қарапайым сөйлеммен»</b> — формат пен көлем шектеуі</li><li><b>«Күрделі терминдерді қолданба»</b> — нақты шектеу (constraint)</li></ul>`,
+    practice:`<p>ChatGPT-ке (немесе кез келген ЖИ чатқа) кіріп, өз пәніңізге қатысты бір ұғымды 7-сынып оқушысына түсіндіретін алғашқы педагогикалық тапсырма беріңіз.</p>`,
+    steps:`<ol><li>chat.openai.com немесе басқа ЖИ құралын ашыңыз</li><li>Жоғарыдағы prompt үлгісін өз пәніңізге бейімдеп жазыңыз</li><li>Жауапты оқып, түсінікті болды ма — бағалаңыз</li><li>Қажет болса «қарапайымдау түсіндір» деп нақтылау сұрағын қойыңыз</li></ol>`,
+    result:`<p>Сіз өз пәніңізге қатысты, оқушы деңгейіне сай, қысқа әрі түсінікті түсіндірме мәтінін аласыз.</p>`,
+    mistakes:`<ul><li>Тым жалпы сұрақ қою («физика түсіндір» — аудитория, көлем, мақсат жоқ)</li><li>Бірінші жауапты сынамай, өзгертусіз пайдалану</li><li>ЖИ жауабын тексерместен оқушыға беру</li></ul>`,
+    summary:`<p>ЖИ — мәтін генерациялайтын құрал, ол білместен емес, ықтималдық негізінде жауап құрастырады. Мұғалім үшін ол көмекші, дайын шешім көзі емес.</p>`,
+    selfcheck:`<ul><li>Генеративті ЖИ мен қарапайым іздеу жүйесінің айырмашылығын түсіндіре аласыз ба?</li><li>LLM қалай жауап құрастыратынын өз сөзіңізбен айта аласыз ба?</li><li>Өз пәніңізге бір prompt жаза алдыңыз ба?</li></ul>`
+  },
+  photo:{label:"[ФОТО]",desc:"ChatGPT чат интерфейсінің скриншоты: сұрақ жолы және ЖИ жауабы көрсетілген."}
+},
+{
+  num:2,
+  title:"ChatGPT-пен жұмыс",
+  sections:{
+    def:`<p><b>Интерфейс</b> — сіз бен ЖИ арасындағы жұмыс кеңістігі: сұрақ жазатын өріс, жауап шығатын аймақ, чаттар тізімі. <b>Чат</b> — сіз бен ЖИ арасындағы бір сөйлесу тарихы.</p>`,
+    full:`<p>Әр жаңа чат — «таза парақ», ЖИ алдыңғы чаттарды есте сақтамайды (жеке баптау қосылмаса). <b>Контекст</b> — сол чат ішінде бұрын жазылған барлық хабарлама; ЖИ жауап бергенде тек сол чаттың контекстін пайдаланады. Сондықтан бір тақырыпты бір чатта жалғастырған дұрыс.</p>
+    <p>Файл жүктеу мүмкіндігі бар нұсқаларда PDF, Word, кесте жүктеп, соның мазмұны бойынша сұрақ қоюға болады. Жауап ұнамаса, оны қайта өңдеуге («тағы да, бірақ...») немесе нақтылау сұрағын қоюға («не білдіресің?», «мысал бер») болады.</p>`,
+    terms:`<ul><li><b>Чат сессиясы</b></li><li><b>Контекст терезесі</b></li><li><b>Follow-up сұрақ</b> — жалғастырушы сұрақ</li><li><b>Regenerate</b> — жауапты қайта генерациялау</li></ul>`,
+    how:`<p>Сіз хабарлама жазасыз → ЖИ бүкіл чат тарихын (контекстті) ескеріп жауап береді → сіз жауапты бағалап, түзетуді сұрай аласыз → диалог осылай жалғаса береді.</p>`,
+    why:`<p>Бір тапсырманы бірнеше қадаммен жетілдіру мүмкіндігі мұғалімге дәл өзіне керек нәтижеге жетуге көмектеседі — алғашқы жауап әрдайым жеткілікті бола бермейді.</p>`,
+    example:`<p>Мұғалім «7-сыныпқа қысқа тест жаса» деп сұрайды, жауап тым оңай шығады. Ол «сұрақтарды қиындат, талдау деңгейінде бол» деп нақтылайды — ЖИ сол контекстті ескеріп жаңа, күрделірек тест береді.</p>`,
+    prompt:`<div class="prompt-block"><b>Дайын prompt (нақтылау үлгісі):</b><pre>Алдыңғы жауабыңды сақтай отырып,
+сұрақтарды "білу" деңгейінен "талдау"
+деңгейіне дейін күрделендір.
+Әр сұраққа дұрыс жауапты да көрсет.</pre></div>`,
+    promptExplain:`<ul><li><b>«Алдыңғы жауабыңды сақтай отырып»</b> — контекстті пайдалануды нақты сұрайды</li><li><b>«білу»→«талдау» деңгейі</b> — Блум таксономиясына сілтеме, нақты бағыт береді</li><li><b>«дұрыс жауапты да көрсет»</b> — форматқа қосымша талап</li></ul>`,
+    practice:`<p>Бір мұғалімдік тапсырманы (мысалы, ата-анаға хабарлама) ChatGPT арқылы толық орындаңыз: алғашқы сұраудан бастап, кемінде екі рет нақтылап жетілдіріңіз.</p>`,
+    steps:`<ol><li>Жаңа чат ашыңыз</li><li>Бастапқы тапсырманы жазыңыз</li><li>Жауапты оқыңыз, нені өзгерту керегін анықтаңыз</li><li>Сол чатта нақтылау сұрағын жазыңыз (жаңа чат ашпаңыз)</li><li>Түпкілікті нұсқаны сақтаңыз</li></ol>`,
+    result:`<p>Бастапқы жауаптан гөрі әлдеқайда нақты, сізге қажетті деңгейге сай соңғы нұсқа аласыз.</p>`,
+    mistakes:`<ul><li>Әр нақтылау үшін жаңа чат ашу — контекст жоғалады</li><li>Бірінші жауапқа қанағаттанып, жетілдірмеу</li><li>Файл жүктегенде файл көлемі тым үлкен болу (өңдеу қиындайды)</li></ul>`,
+    summary:`<p>Чат — сөйлесу процесі, тапсырма беру емес. Контекстті сақтап, диалог арқылы жауапты сатылап жетілдіру — ЖИ-мен жұмыстың негізгі дағдысы.</p>`,
+    selfcheck:`<ul><li>Контекст деген не және неге маңызды?</li><li>Жауапты нақтылау үшін қандай сөздер қолданасыз?</li><li>Бір тапсырманы екі қадамда жетілдіре алдыңыз ба?</li></ul>`
+  },
+  photo:{label:"[СКРИНШОТ]",desc:"Бір чат ішінде бастапқы сұрақ пен нақтылаудан кейінгі жауаптың салыстырмасы."}
+},
+{
+  num:3,
+  title:"Prompt дегеніміз не?",
+  sections:{
+    def:`<p><b>Prompt</b> — ЖИ-ге берілетін жазбаша тапсырма-сұрау. Жауап сапасы 90% жағдайда prompt сапасына байланысты.</p>`,
+    full:`<p>Жақсы prompt нақты рөл, контекст, мақсат, талап, формат және шектеуден тұрады. Нашар prompt жалпы, түсініксіз, қысқа болады да, ЖИ өзі болжап, кездейсоқ нәтиже береді.</p>
+    <p>Негізгі формула: <b>Рөл + Контекст + Тапсырма + Талап + Формат + Шектеу</b>. Бұл формуланың әр бөлігі жауаптың бір қырын басқарады: рөл — тон мен сапаны, контекст — фонды, тапсырма — не істеу керегін, талап — қандай өлшемге сай болу керегін, формат — сыртқы түрін, шектеу — не істемеу керегін.</p>`,
+    terms:`<ul><li><b>Рөл</b> — ЖИ кім болып жауап беруі керек</li><li><b>Контекст</b> — фондық ақпарат (сынып, пән, деңгей)</li><li><b>Мақсат</b> — не үшін керек</li><li><b>Талап</b> — қандай өлшемге сай болу керек</li><li><b>Формат</b> — тізім, кесте, эссе т.б.</li><li><b>Шектеу</b> — көлем, тіл, тыйым салынған нәрселер</li><li><b>Аудитория</b> — кімге арналған</li></ul>`,
+    how:`<p>Әр элементті бір-бірден қосу арқылы жауап дәлдігі артады: тек тапсырма берсеңіз — жалпы жауап; рөл+контекст+формат қоссаңыз — дәл өзіңізге қажет жауап шығады.</p>`,
+    why:`<p>Уақытты үнемдейді: дұрыс құрылған promptпен бірінші жауап-ақ пайдалануға жарайды, ал нашар prompt бірнеше рет қайта жазуды талап етеді.</p>`,
+    example:`<div class="compare"><p><b>Нашар prompt:</b> «Математикадан тапсырма жаса»</p><p><b>Жақсы prompt:</b> «Сен — 5-сынып математика мұғалімісің. Бөлшектерді қосу тақырыбына, орта деңгейдегі оқушыға арналған, 5 есептен тұратын тапсырма жаса. Әр есептің жауабын соңында бөлек көрсет.»</p></div>`,
+    prompt:`<div class="prompt-block"><b>Дайын универсалды prompt қалыбы:</b><pre>Сен — [пән] мұғалімісің.
+[Сынып/деңгей] оқушысына арналған
+[тақырып] бойынша [тапсырма түрі] жаса.
+Талап: [нақты талап].
+Формат: [формат].
+Шектеу: [шектеу].</pre></div>`,
+    promptExplain:`<ul><li>Квадрат жақшалар — сіз өз пәніңізге қарай ауыстыратын бөліктер</li><li>Әр [ ] бос орны толтырылмаса, ЖИ өзі болжап, дәлдік төмендейді</li><li>Талап пен шектеуді бөлек жазу — модельге екі түрлі нұсқау берудің анық жолы</li></ul>`,
+    practice:`<p>Өз пәніңізге арналған, жоғарыдағы формула бойынша толық prompt құрастырыңыз.</p>`,
+    steps:`<ol><li>Формуланың алты элементін қағазға жазып шығыңыз</li><li>Әрқайсысын өз тапсырмаңызға қарай толтырыңыз</li><li>Оны ChatGPT-ке беріп, нәтижені бағалаңыз</li><li>Қажет элементті қосып, жауапты жақсартыңыз</li></ol>`,
+    result:`<p>Алты элементтен тұратын, нақты әрі қайталап пайдалануға жарамды өз prompt үлгіңіз пайда болады.</p>`,
+    mistakes:`<ul><li>Формат пен шектеуді ұмыту — жауап тым ұзақ немесе тым қысқа шығады</li><li>Бірнеше тапсырманы бір promptқа сыйдыруға тырысу</li><li>Аудиторияны көрсетпеу — тіл деңгейі сәйкес келмейді</li></ul>`,
+    summary:`<p>Prompt — жауап сапасының негізі. Рөл+Контекст+Тапсырма+Талап+Формат+Шектеу формуласы кез келген пәнге бейімделеді.</p>`,
+    selfcheck:`<ul><li>Алты элементті жаттап айта аласыз ба?</li><li>Нашар мен жақсы promptтың айырмашылығын мысалмен көрсете аласыз ба?</li></ul>`
+  },
+  photo:{label:"[ИНФОГРАФИКА]",desc:"«Рөл + Контекст + Тапсырма + Талап + Формат + Шектеу» формуласының сызбасы."}
+},
+{
+  num:4,
+  title:"ЖИ арқылы сабақ жоспарын жасау",
+  sections:{
+    def:`<p>ЖИ-ге сабақ жоспарын тапсырма ретінде беру — жай «сабақ жоспарын жаз» демей, барлық қажет компоненттерді (мақсат, кезеңдер, бағалау) нақты тізіп сұрау.</p>`,
+    full:`<p>Толық сабақ жоспары мына бөліктерден тұрады: <b>сабақ мақсаты</b> (не үйретеміз), <b>оқу мақсаты</b> (оқу бағдарламасы бойынша нақты код/тұжырым), <b>сабақ кезеңдері</b> (ұйымдастыру, өзектендіру, жаңа тақырып, бекіту, қорытынды), <b>мұғалім әрекеті</b> мен <b>оқушы әрекеті</b> әр кезеңде бөлек, <b>бағалау</b> тәсілі, <b>саралау</b> (әртүрлі деңгейдегі оқушыға), <b>рефлексия</b> сұрақтары, <b>үй тапсырмасы</b>.</p>
+    <p>ЖИ-ге осы құрылымды тізіп бергенде, ол әр бөлікті толтырып, дайын жоспар қайтарады — сіз тек өз сыныбыңызға бейімдеп өзгертесіз.</p>`,
+    terms:`<ul><li><b>Оқу мақсаты</b></li><li><b>Сабақ кезеңі</b></li><li><b>Саралау (дифференциация)</b></li><li><b>Рефлексия</b></li><li><b>Қалыптастырушы бағалау</b></li></ul>`,
+    how:`<p>Дайын универсалды promptты өз пәніңіз бен сыныбыңызға толтырып бересіз → ЖИ құрылымды сақтап, әр бөлімді жазады → сіз нақты сынып ерекшелігіне (мысалы, қос тілді сынып) қарай түзетесіз.</p>`,
+    why:`<p>Сабақ жоспарын жазу — мұғалімнің ең көп уақыт жұмсайтын жұмыстарының бірі. ЖИ құрылымды бірден дайын беріп, мұғалімге тек мазмұнды тексеру мен бейімдеу қалады.</p>`,
+    example:`<p>Ағылшын тілі мұғалімі «Present Simple» тақырыбына 5-сыныпқа арналған толық жоспарды 2 минутта алады, содан кейін өз сыныбының деңгейіне сай мысалдарды өзгертеді.</p>`,
+    prompt:`<div class="prompt-block"><b>Дайын универсалды prompt:</b><pre>Сен — тәжірибелі [пән] мұғалімісің.
+[Сынып] сыныбына арналған "[тақырып]"
+тақырыбына 45 минуттық сабақ жоспарын жаса.
+Құрылым: сабақ мақсаты, оқу мақсаты,
+сабақ кезеңдері (ұйымдастыру, өзектендіру,
+жаңа тақырып, бекіту, қорытынды) — әр
+кезеңде мұғалім және оқушы әрекетін бөлек
+көрсет, бағалау тәсілі, 3 деңгейлі саралау,
+рефлексия сұрақтары, үй тапсырмасы.
+Кестелі форматта бер.</pre></div>`,
+    promptExplain:`<ul><li><b>«45 минуттық»</b> — уақыт шектеуі кезең ұзақтығын дәл бөлуге көмектеседі</li><li><b>«мұғалім және оқушы әрекетін бөлек»</b> — нақты формат талабы, көп мұғалім жоспарында міндетті баған</li><li><b>«кестелі форматта»</b> — оқуға ыңғайлы, күнделікке салуға дайын түр</li></ul>`,
+    practice:`<p>Өз пәніңіз бен сыныбыңызға арналған бір сабақ жоспарын осы prompt арқылы жасаңыз.</p>`,
+    steps:`<ol><li>Prompt-тағы жақшаларды өз мәліметіңізбен толтырыңыз</li><li>ЖИ-ге жіберіп, толық жоспарды алыңыз</li><li>Оқу мақсатын өз бағдарламаңыздағы кодпен салыстырып түзетіңіз</li><li>Мысалдарды өз сыныбыңыздың ерекшелігіне бейімдеңіз</li></ol>`,
+    result:`<p>Барлық негізгі бөліктен тұратын, кестелі, дайын сабақ жоспары — қолмен жазудан 5-10 есе тезірек.</p>`,
+    mistakes:`<ul><li>Оқу мақсатын тексермей, жалпы мақсатты сол күйде қалдыру</li><li>Уақыт бөлінісін сұрамай, кезеңдер тым ұзақ/қысқа шығуы</li><li>Саралауды сұрамай, барлық оқушыға бір деңгейлі тапсырма қалдыру</li></ul>`,
+    summary:`<p>Нақты құрылымды тізіп сұраған сабақ жоспары уақытты айтарлықтай үнемдейді, бірақ түпкі бағдарлама талаптарына сай екенін мұғалім өзі тексеруі керек.</p>`,
+    selfcheck:`<ul><li>Сабақ жоспарының 8 негізгі бөлігін атай аласыз ба?</li><li>Өз сабағыңызды осы promptпен жасап көрдіңіз бе?</li></ul>`
+  },
+  photo:{label:"[ФОТО]",desc:"ЖИ жасаған кестелі сабақ жоспарының үлгісі."}
+},
+{
+  num:5,
+  title:"ЖИ арқылы тапсырма құрастыру",
+  sections:{
+    def:`<p><b>Деңгейлік тапсырма</b> — қиындығы бойынша сатыланған тапсырмалар жиынтығы: барлық оқушы бір деңгейден бастап, өз қарқынымен жоғарылайды.</p>`,
+    full:`<p>Тапсырма түрлері: <b>репродуктивті</b> (жаттанды білімді қайталау — анықтама беру, формула жазу), <b>қолдану</b> (білімді жаңа жағдайда пайдалану — есеп шығару), <b>талдау</b> (себеп-салдарды анықтау, салыстыру), <b>жинақтау</b> (бөлек ақпаратты біріктіріп қорытынды жасау), <b>шығармашылық</b> (жаңа өнім жасау — эссе, жоба, сурет), <b>зерттеу</b> (өз бетінше сұрақ қойып, дәлел жинау). Тапсырма жеке, жұптық немесе топтық форматта берілуі мүмкін — формат тапсырма түріне сай таңдалады (мысалы, зерттеу — топтық).</p>`,
+    terms:`<ul><li><b>Репродуктивті тапсырма</b></li><li><b>Қолдану деңгейі</b></li><li><b>Талдау деңгейі</b></li><li><b>Жинақтау</b></li><li><b>Шығармашылық тапсырма</b></li><li><b>Зерттеу тапсырмасы</b></li></ul>`,
+    how:`<p>ЖИ-ге тақырыпты беріп, әр деңгейге бір тапсырма сұрайсыз → ол әр деңгейге сай іс-әрекет етістігін (анықта, салыстыр, бағала, жаса) қолданып тапсырма құрастырады.</p>`,
+    why:`<p>Барлық оқушыға бір қиындықтағы тапсырма беру әділетсіз: күшті оқушыға оңай, әлсіз оқушыға қиын болады. ЖИ көмегімен деңгейлеп тапсырма жасау уақытты үнемдейді.</p>`,
+    example:`<p>Тарих мұғалімі «Тәуелсіздік» тақырыбына: репродуктивті — «Тәуелсіздік қашан жарияланды?», талдау — «Неге дәл сол жылы жарияланды?», шығармашылық — «Сол кезеңдегі азаматтың атынан хат жаз».</p>`,
+    prompt:`<div class="prompt-block"><b>Дайын prompt:</b><pre>Сен — [пән] мұғалімісің.
+"[тақырып]" тақырыбына 3 деңгейлі тапсырма жаса:
+1) репродуктивті (біл, ата)
+2) қолдану/талдау (салыстыр, түсіндір)
+3) шығармашылық (жаса, бағала, ұсын)
+Әр тапсырманың жанында қандай форматта
+орындалатынын (жеке/жұптық/топтық) көрсет.</pre></div>`,
+    promptExplain:`<ul><li><b>«біл, ата» / «салыстыр, түсіндір» / «жаса, бағала»</b> — Блум таксономиясының етістіктері, деңгейді нақты белгілейді</li><li><b>Форматты сұрау</b> — сабақты ұйымдастыруға дайын нұсқау береді</li></ul>`,
+    practice:`<p>Бір тақырыпқа 3 деңгейлі тапсырма жасатыңыз.</p>`,
+    steps:`<ol><li>Өз тақырыбыңызды promptқа қойыңыз</li><li>ЖИ-ден 3 деңгейлі жауап алыңыз</li><li>Әр тапсырманың сыныбыңыздың нақты жағдайына сай екенін тексеріңіз</li><li>Қажет болса санын көбейтіп сұраңыз</li></ol>`,
+    result:`<p>Үш түрлі қиындықтағы, дайын форматтағы тапсырмалар жиынтығы.</p>`,
+    mistakes:`<ul><li>Деңгей атауын айтпай, «оңай/қиын тапсырма жаса» деп жалпылама сұрау</li><li>Барлық деңгейге бірдей форматты (жеке жұмыс) қалдыру</li></ul>`,
+    summary:`<p>Блум таксономиясының деңгейлерін promptта нақты көрсету — сапалы, саралап оқытуға жарамды тапсырма алудың кілті.</p>`,
+    selfcheck:`<ul><li>6 тапсырма түрін атай аласыз ба?</li><li>Өз тақырыбыңызға 3 деңгей жасап көрдіңіз бе?</li></ul>`
+  },
+  photo:{label:"[ФОТО]",desc:"Үш деңгейлі тапсырма үлгісінің экран суреті."}
+},
+{
+  num:6,
+  title:"ЖИ арқылы тест және бағалау",
+  sections:{
+    def:`<p><b>Дистрактор</b> — тест сұрағындағы қате, бірақ шындыққа жақын көрінетін жауап нұсқасы. <b>Дескриптор</b> — оқушы жұмысының қай деңгейде екенін сипаттайтын нақты өлшем сөйлемі.</p>`,
+    full:`<p>Жақсы тест сұрағы бір ғана дұрыс жауапқа ие болуы, ал дистракторлар оқушының жиі жіберетін қателерін көрсетуі керек — кездейсоқ, мағынасыз нұсқа болмауы тиіс. <b>Рубрика</b> — бірнеше критерий бойынша баллды бөлетін бағалау кестесі. <b>Қалыптастырушы бағалау</b> — қорытынды баға қоймай, оқушының үлгеруін бақылап, дереу кері байланыс беру. <b>Кері байланыс</b> нақты, түзетуге бағытталған болуы керек («жақсы» емес, «екінші абзацта дәлел жетіспейді»).</p>`,
+    terms:`<ul><li><b>Дистрактор</b></li><li><b>Дескриптор</b></li><li><b>Рубрика</b></li><li><b>Қалыптастырушы бағалау</b></li><li><b>Критерий</b></li></ul>`,
+    how:`<p>Тақырып пен сұрақ санын беріп сұрайсыз → ЖИ сұрақ, 4 жауап нұсқасы (біреуі дұрыс), дұрыс жауап пен әр деңгейге дескриптор жасайды.</p>`,
+    why:`<p>Сапалы дистрактормен тест құрастыру көп уақыт алады; ЖИ бұл процесті жеделдетеді, ал мұғалім тек мазмұнды тексереді.</p>`,
+    example:`<p>Химия мұғалімі «Атом құрылысы» тақырыбына 10 сұрақтан тұратын тест пен әр сұраққа неге сол дистрактордың қате екенін түсіндіретін дескриптор алады.</p>`,
+    prompt:`<div class="prompt-block"><b>Дайын prompt:</b><pre>Сен — [пән] мұғалімісің.
+"[тақырып]" тақырыбына 10 тест сұрағын жаса.
+Әр сұраққа 4 жауап нұсқасы бер, біреуі дұрыс,
+қалғандары оқушының жиі жасайтын қателеріне
+негізделген дистрактор болсын.
+Соңында: дұрыс жауаптар кестесі және
+әр деңгейге (0-40%, 40-70%, 70-100%)
+қысқа дескриптор.</pre></div>`,
+    promptExplain:`<ul><li><b>«жиі жасайтын қателеріне негізделген»</b> — дистракторды кездейсоқ емес, педагогикалық негізде жасатады</li><li><b>Деңгей пайызы (0-40% т.б.)</b> — дескрипторды нақты бөлікке байлайды</li></ul>`,
+    practice:`<p>10 тест сұрағын, дұрыс жауаптарын және дескрипторларын толық жасатыңыз.</p>`,
+    steps:`<ol><li>Тақырыпты promptқа қойыңыз</li><li>Жауапты алып, әр сұрақтың дистракторын тексеріңіз</li><li>Мағынасыз нұсқа болса, «түзет» деп нақтылаңыз</li><li>Дескрипторларды бағалау парағына көшіріңіз</li></ol>`,
+    result:`<p>Қолдануға дайын, дұрыс жауап пен дескриптор кестесі бар толық тест.</p>`,
+    mistakes:`<ul><li>Дистракторды тексермей, тым оңай/түсінікті қалдыру</li><li>Дескрипторды жалпылама «жақсы/нашар» деп сұрату</li></ul>`,
+    summary:`<p>Сапалы тест — нақты дистрактор мен өлшенетін дескриптордан тұрады; ЖИ екеуін де жылдам, бірақ тексеруді қажет ететін түрде жасайды.</p>`,
+    selfcheck:`<ul><li>Дистрактор мен дескрипторды ажырата аласыз ба?</li><li>Өз пәніңізге тест жасатып көрдіңіз бе?</li></ul>`
+  },
+  photo:{label:"[ФОТО]",desc:"ЖИ құрастырған тест сұрағы мен дескриптор кестесінің үлгісі."}
+},
+{
+  num:7,
+  title:"ЖИ арқылы мәтінмен жұмыс",
+  sections:{
+    def:`<p>ЖИ дайын мәтінді өзгертуге тамаша құрал: қысқарту, жеңілдету, күрделендіру, одан сұрақ құрастыру — барлығы бір промптпен жасалады.</p>`,
+    full:`<p>Мәтінмен жұмыстың негізгі түрлері: <b>қысқарту</b> (негізгі ойды сақтап көлемді азайту), <b>қарапайым тілге түсіру</b> (күрделі терминдерді жеңілдету — тілдік кедергісі бар немесе кіші сынып оқушысына арналған), <b>күрделендіру</b> (қабілетті оқушыға академиялық тілмен байыту), <b>мәтіннен сұрақ жасау</b> (түсінуді тексеретін сұрақтар), <b>негізгі ойды анықтау</b>, <b>терминдерді түсіндіру</b>, <b>деңгейге бейімдеу</b> және <b>қате түзету</b> (грамматика, стиль).</p>`,
+    terms:`<ul><li><b>Бейімдеу (адаптация)</b></li><li><b>Жеңілдету</b></li><li><b>Негізгі ой</b></li><li><b>Мәтін деңгейі</b></li></ul>`,
+    how:`<p>Түпнұсқа мәтінді ЖИ-ге қоясыз (немесе жүктейсіз) → қандай өзгеріс керек екенін нақты айтасыз (мысалы «3-сынып деңгейіне дейін жеңілдет») → жаңа нұсқа аласыз.</p>`,
+    why:`<p>Бір сыныпта әртүрлі деңгейдегі оқушы болады; бір мәтінді үш нұсқада дайындау мұғалімге қолмен сағаттар алатын жұмыс, ЖИ-мен минуттар.</p>`,
+    example:`<p>Әдебиет мұғалімі күрделі көркем үзіндіні тілі жетілмеген оқушыға арнап қарапайым тілге, ал қабілетті оқушыға талдау сұрақтарымен байытып береді.</p>`,
+    prompt:`<div class="prompt-block"><b>Дайын prompt:</b><pre>Төмендегі мәтінді 3 нұсқада бейімде:
+1) Қарапайым тіл (тілдік кедергісі бар оқушыға)
+2) Стандарт деңгей (орташа оқушыға)
+3) Күрделі талдау сұрақтарымен (күшті оқушыға)
+Негізгі мазмұнды өзгертпе.
+Мәтін: "[мәтінді осында қой]"</pre></div>`,
+    promptExplain:`<ul><li><b>3 нұсқа сұрау</b> — бір іс-әрекетпен саралап оқытуға дайын материал алу</li><li><b>«Негізгі мазмұнды өзгертпе»</b> — мәтіннің мағынасы бұрмаланбауын қамтамасыз ету</li></ul>`,
+    practice:`<p>Бір мәтінді 3 түрлі деңгейдегі оқушыға бейімдеп жасатыңыз.</p>`,
+    steps:`<ol><li>Түпнұсқа мәтінді таңдаңыз (оқулықтан немесе өзіңіз жазған)</li><li>Prompt-қа қойып, 3 нұсқаны алыңыз</li><li>Әр нұсқаны мазмұн дұрыстығына тексеріңіз</li><li>Сыныпта нақты оқушыларға таратыңыз</li></ol>`,
+    result:`<p>Бір тақырыпқа үш деңгейлі, дайын мәтін нұсқалары.</p>`,
+    mistakes:`<ul><li>Жеңілдету кезінде маңызды факті жоғалып кетуі мүмкін — тексермеу</li><li>Күрделендіргенде оқушы жасына сай емес лексика қосылуы</li></ul>`,
+    summary:`<p>ЖИ мәтінді әр оқушының деңгейіне сай бірнеше нұсқада тез бейімдеп береді, бірақ мазмұн дұрыстығын мұғалім міндетті түрде тексереді.</p>`,
+    selfcheck:`<ul><li>Мәтінмен жұмыстың 8 түрін атай аласыз ба?</li><li>Бір мәтінді 3 деңгейге бейімдеп көрдіңіз бе?</li></ul>`
+  },
+  photo:{label:"[ФОТО]",desc:"Бір мәтіннің үш деңгейдегі нұсқасының салыстырмасы."}
+},
+{
+  num:8,
+  title:"ЖИ арқылы презентация жасау",
+  sections:{
+    def:`<p>ЖИ дайын слайд файлын жасамайды (сурет генераторынан басқа), бірақ презентацияның <b>құрылымын, мәтінін және дизайн ұсынысын</b> толық дайындап бере алады.</p>`,
+    full:`<p>Жақсы презентация құрылымы: тақырып слайды → мақсат → 3-5 негізгі ой слайды (әрқайсысында 1 ой, 5-7 сөзден аспайтын мәтін) → мысал/сурет слайды → қорытынды → сұрақтар слайды. <b>Слайдтағы мәтін көлемі</b> — ереже: слайд оқуға емес, көруге арналған, сондықтан толық сөйлем емес, тірек сөздер жазылады. <b>Инфографика</b> мен <b>диаграмма</b> — сан деректі көрнекі ету үшін қолданылады.</p>`,
+    terms:`<ul><li><b>Слайд құрылымы</b></li><li><b>Тірек сөз</b></li><li><b>Инфографика</b></li><li><b>Диаграмма</b></li><li><b>Визуал</b></li></ul>`,
+    how:`<p>Тақырып пен слайд санын бересіз → ЖИ әр слайдтың атауын, тірек сөздерін және спикер жазбасын (не айту керек) құрастырады → сіз оны PowerPoint/Canva-ға өз қолыңызбен немесе pptx skill арқылы саласыз.</p>`,
+    why:`<p>Презентация құрылымын ойлап табу — уақыт жегіш жұмыс; ЖИ дайын қаңқаны бірден береді, мұғалім тек безендіру мен мысалдарды қосады.</p>`,
+    example:`<p>География мұғалімі «Қазақстанның су ресурстары» тақырыбына 8 слайдтық құрылымды алады: әр слайдта тақырып, 3-4 тірек сөз және не айту керегі жазылған спикер жазбасы.</p>`,
+    prompt:`<div class="prompt-block"><b>Дайын prompt:</b><pre>Сен — [пән] мұғалімісің.
+"[тақырып]" тақырыбына 8-10 слайдтық
+презентация құрылымын жаса.
+Әр слайд үшін: тақырып, 3-5 тірек сөз,
+қандай визуал/диаграмма қою керегі,
+мұғалімге арналған спикер жазбасы (2-3 сөйлем).</pre></div>`,
+    promptExplain:`<ul><li><b>«3-5 тірек сөз»</b> — слайдтың толы мәтінмен емес, тірек сөзбен берілуін қамтамасыз етеді</li><li><b>«спикер жазбасы»</b> — мұғалімге сабақ барысында не айту керегін еске салады</li></ul>`,
+    practice:`<p>Бір сабаққа 8-10 слайдтық презентация құрылымын жасаңыз.</p>`,
+    steps:`<ol><li>Тақырыбыңызды promptқа қойыңыз</li><li>Құрылымды алыңыз</li><li>Әр слайдқа қандай сурет керек екенін белгілеп, 9-модульдегі әдіспен сурет жасаңыз</li><li>PowerPoint-ке немесе Claude-тың слайд құралына көшіріңіз</li></ol>`,
+    result:`<p>Толық жазылған, безендіруге дайын презентация қаңқасы.</p>`,
+    mistakes:`<ul><li>Слайдқа толық сөйлем қою — оқушы оқымай, тыңдамайды</li><li>Спикер жазбасын сұрамай, не айту керегін ұмытып қалу</li></ul>`,
+    summary:`<p>ЖИ презентацияның мазмұнды қаңқасын дайындайды; көрнекілік пен қысқалық ережесін мұғалім қадағалайды.</p>`,
+    selfcheck:`<ul><li>Слайдта неге толық сөйлем жазылмауы керек?</li><li>Өз сабағыңызға құрылым жасап көрдіңіз бе?</li></ul>`
+  },
+  photo:{label:"[ФОТО]",desc:"8 слайдтық презентация құрылымының мысалы."}
+},
+{
+  num:9,
+  title:"ЖИ арқылы сурет жасау",
+  sections:{
+    def:`<p><b>AI image generation</b> — мәтіндік сипаттама (prompt) бойынша жаңа сурет жасайтын ЖИ түрі (мысалы, DALL·E, Midjourney).</p>`,
+    full:`<p>Image prompt құрылымы: <b>объект</b> (не бейнеленеді), <b>орта</b> (қай жерде, қандай фон), <b>стиль</b> (реалистік, мультфильм, схема), <b>композиция</b> (қандай бұрыштан, не орталықта), <b>жарық</b> (күндізгі, жұмсақ), <b>камера бұрышы</b>. Білім беруде сурет теориялық ұғымды көрнекі ету үшін қолданылады — мысалы, жасуша құрылымы, тарихи оқиға сахнасы, физикалық құбылыс схемасы.</p>`,
+    terms:`<ul><li><b>Image prompt</b></li><li><b>Стиль (style)</b></li><li><b>Композиция</b></li><li><b>Схема/диаграмма стилі</b></li></ul>`,
+    how:`<p>Объект, орта, стиль, композицияны толық сипаттап promptты жазасыз → генератор осы сипаттама бойынша сурет шығарады → нәтиже ұнамаса, бір элементті өзгертіп қайта сұрайсыз.</p>`,
+    why:`<p>Дайын суреттерді интернеттен іздеу авторлық құқық мәселесін тудыруы мүмкін; ЖИ жасаған сурет — нақты сол сабаққа арналған, бірегей көрнекі құрал.</p>`,
+    example:`<p>Биология мұғалімі жасушаның құрылымын көрсететін, белгілері (label) жазылған оқу схемасын сурет генераторымен жасатады.</p>`,
+    prompt:`<div class="prompt-block"><b>Дайын prompt (әр пәнге бейімделеді):</b><pre>Білім беру мақсатындағы қарапайым схема:
+[объект] анық көрсетілген, [орта/фон] бар,
+таза, оқу құралына сай стиль, жарық түсі
+жұмсақ, артық безендіру жоқ, түсінікті
+белгілермен (label) [нақты элементтер].</pre></div>`,
+    promptExplain:`<ul><li><b>«білім беру мақсатындағы»</b> — стильді академиялық, артық безендірусіз бағыттайды</li><li><b>«label»</b> — оқу схемасына міндетті белгілерді сұратады</li><li><b>«артық безендіру жоқ»</b> — оқушының назарын негізгі объектіден аудармау</li></ul>`,
+    practice:`<p>Өз пәніңізге арналған 3 оқу суретін жасаңыз, әрқайсысына дайын prompt жазыңыз.</p>`,
+    steps:`<ol><li>3 тақырыпты таңдаңыз (мысалы, судың айналымы, жасуша, тарихи карта)</li><li>Әрқайсысына жоғарыдағы қалыпты толтырыңыз</li><li>Сурет генераторына жіберіңіз</li><li>Нәтиже сәйкес келмесе, бір деталін нақтылап қайталаңыз</li></ol>`,
+    result:`<p>Сабаққа тікелей қолдануға жарамды үш оқу суреті/схемасы.</p>`,
+    mistakes:`<ul><li>Стильді көрсетпей, генератордың кездейсоқ стилін алу</li><li>Мәтінді (жазуларды) сурет ішіне дәл түсіру — көп генератор мәтінді дұрыс бермейді, сондықтан белгілерді кейін өзіңіз қосқан жөн</li></ul>`,
+    summary:`<p>Нақты құрылымды image prompt (объект+орта+стиль+композиция) сабаққа сай, бірегей оқу суретін жылдам жасауға мүмкіндік береді.</p>`,
+    selfcheck:`<ul><li>Image prompt-тың 5 элементін атай аласыз ба?</li><li>3 сурет жасап көрдіңіз бе?</li></ul>`
+  },
+  photo:{label:"[ФОТО]",desc:"ЖИ жасаған оқу схемасының мысалы (мысалы, жасуша құрылымы)."}
+},
+{
+  num:10,
+  title:"ЖИ арқылы видео жасау",
+  sections:{
+    def:`<p><b>AI video</b> — мәтіндік сипаттама немесе бір суреттен қысқа видео роликтер шығаратын ЖИ құралдары (мысалы, Sora, Runway).</p>`,
+    full:`<p>Екі негізгі жол бар: <b>мәтіннен видео</b> (толық сипаттама бойынша генерация) және <b>суреттен видео</b> (бір статикалық суретті қозғалысқа келтіру). Видео жасамас бұрын <b>сценарий</b> (не болатыны, қандай ретпен) және <b>диктор мәтіні</b> (дауыстап оқылатын түсіндірме) дайын болуы керек. Әр кадрдың <b>кадр сипаттамасы</b> (не көрінеді, қанша секунд) жазылса, нәтиже болжамды болады.</p>`,
+    terms:`<ul><li><b>Сценарий</b></li><li><b>Диктор мәтіні</b></li><li><b>Кадр сипаттамасы</b></li><li><b>Text-to-video</b></li></ul>`,
+    how:`<p>Алдымен сценарий мен диктор мәтінін ЖИ чатпен жазып аласыз → сосын әр кадрды бөлек video-prompt ретінде видео генераторға бересіз → дайын кадрларды бір видео етіп біріктіресіз (қарапайым видео өңдеу құралымен).</p>`,
+    why:`<p>Қысқа оқу видеосы күрделі процесті (мысалы, химиялық реакция) статикалық суреттен де әсерлі көрсетеді, ал бұрын видео түсіру арнайы жабдық пен уақытты талап ететін.</p>`,
+    example:`<p>Физика мұғалімі «жарық сынуы» құбылысын көрсететін 30 секундтық анимацияның сценарийі мен әр кадр сипаттамасын ЖИ-мен дайындайды.</p>`,
+    prompt:`<div class="prompt-block"><b>Дайын prompt (сценарий үшін):</b><pre>Сен — [пән] мұғалімісің.
+"[құбылыс/тақырып]" туралы 30-60 секундтық
+оқу видеосының сценарийін жаз:
+- 3-4 кадр, әр кадрға сипаттама (не көрінеді)
+- әр кадрға диктор мәтіні (1-2 сөйлем)
+- жалпы видео ұзақтығы</pre></div>`,
+    promptExplain:`<ul><li><b>«3-4 кадр»</b> — видеоны басқарылатын бөліктерге бөледі</li><li><b>«диктор мәтіні»</b> — видеоны түсіндірмесіз бос анимация болудан сақтайды</li></ul>`,
+    practice:`<p>30-60 секундтық оқу видеосының сценарийін және әр кадрға video-prompt жасаңыз.</p>`,
+    steps:`<ol><li>Тақырыпты promptқа қойып, сценарий алыңыз</li><li>Әр кадрдың сипаттамасын жеке video-prompt ретінде рәсімдеңіз</li><li>Қолжетімді видео генераторда сынаңыз (немесе жай сценарийді сабақта оқып, слайдпен көрсетіңіз)</li></ol>`,
+    result:`<p>Дайын сценарий, диктор мәтіні және кадр сипаттамалары — видео генератор болмаса да, сабақта тірі түсіндіру үшін пайдалы материал.</p>`,
+    mistakes:`<ul><li>Сценариссіз тікелей видео генерациялауға тырысу — нәтиже болжамсыз болады</li><li>Бір кадрға тым көп оқиға сыйдыруға тырысу</li></ul>`,
+    summary:`<p>Сапалы AI видео сценарийден басталады: кадр саны, диктор мәтіні және ұзақтық нақты жазылғанда ғана нәтиже болжамды болады.</p>`,
+    selfcheck:`<ul><li>Мәтіннен видео мен суреттен видеоның айырмашылығын түсіндіре аласыз ба?</li><li>Бір сценарий жазып көрдіңіз бе?</li></ul>`
+  },
+  photo:{label:"РАСКАДРОВКА",desc:"Оқу видеосының 3 кадрлық сценарийі: әр кадрда не көрсетілетінін алдын ала жоспарлау керек."}
+},
+{
+  num:11,
+  title:"ЖИ арқылы жеке тапсырма жасау",
+  sections:{
+    def:`<p>Жеке (дифференциалды) тапсырма — әр оқушының нақты деңгейі мен қажеттілігіне сай құрастырылған, стандартты емес тапсырма.</p>`,
+    full:`<p>ЖИ көмегімен: <b>оқушы деңгейін ескеру</b> (тест нәтижесі немесе байқау негізінде), <b>қиындық деңгейін өзгерту</b> (бір тапсырманы жеңілдету/қиындату), <b>қате бойынша тапсырма жасау</b> (оқушы жиі жіберетін қатеге бағытталған жаттығу), <b>қосымша тапсырма</b> (тез бітірген оқушыға), <b>қабілеті жоғары оқушыға</b> тереңдетілген тапсырма, <b>қолдауды қажет ететін оқушыға</b> қадамдап көрсетілген (scaffolded) тапсырма жасауға болады.</p>`,
+    terms:`<ul><li><b>Дифференциация</b></li><li><b>Scaffolding (қолдаумен тапсырма)</b></li><li><b>Қосымша тапсырма</b></li></ul>`,
+    how:`<p>Оқушының нақты қиындығын (мысалы, «бөлшекті қосуда қате жасайды») ЖИ-ге сипаттайсыз → ол сол қатеге бағытталған, қадамдап шешілетін жаттығу ұсынады.</p>`,
+    why:`<p>30 оқушыға 30 түрлі тапсырма жазу мүмкін емес, бірақ ЖИ көмегімен әр топқа (әлсіз/орта/күшті) бөлек нұсқа жасау шамалы уақытта орындалады.</p>`,
+    example:`<p>Математика мұғалімі теңдеу шығаруда қате жіберетін оқушыға арнап, әр қадамы түсіндірілген (scaffolded) 3 қосымша есеп алады.</p>`,
+    prompt:`<div class="prompt-block"><b>Дайын prompt:</b><pre>Оқушы "[нақты тақырып]" тақырыбында
+"[нақты қате]" қатесін жиі жасайды.
+Осы қатеге бағытталған, қадамдап
+шешілетін (әр қадам түсіндірілген)
+3 жаттығу жаса. Соңында қабілеті
+жоғары оқушыға арналған 1 қосымша
+тереңдетілген тапсырма қос.</pre></div>`,
+    promptExplain:`<ul><li><b>«нақты қате»</b> — жалпы емес, накты диагностикаға негізделген тапсырма алудың кілті</li><li><b>«қадамдап шешілетін»</b> — қолдауды қажет ететін оқушыға scaffolding жасайды</li></ul>`,
+    practice:`<p>Бір тақырыпқа 3 түрлі деңгейдегі оқушыға жеке тапсырма жасаңыз.</p>`,
+    steps:`<ol><li>Нақты бір оқушының қиындығын анықтаңыз</li><li>Promptты сол қиындыққа бейімдеп жіберіңіз</li><li>Күшті оқушыға арналған қосымша бөлікті тексеріңіз</li><li>Тапсырмаларды сынып ішінде сынап көріңіз</li></ol>`,
+    result:`<p>Үш түрлі деңгейге сай, нақты қиындыққа бағытталған жеке тапсырмалар жиынтығы.</p>`,
+    mistakes:`<ul><li>Оқушының нақты қатесін көрсетпей, жалпы «жеңіл тапсырма жаса» деп сұрау</li><li>Қолдау қажет оқушыға да, күшті оқушыға да бірдей тапсырма қалдырып қою</li></ul>`,
+    summary:`<p>Нақты диагностикаланған қиындыққа негізделген prompt — шынайы дифференциацияға жарамды тапсырма алудың басты шарты.</p>`,
+    selfcheck:`<ul><li>Scaffolding деген не?</li><li>Бір оқушыға нақты жеке тапсырма жасап көрдіңіз бе?</li></ul>`
+  },
+  photo:{label:"[ФОТО]",desc:"Үш деңгейлі жеке тапсырма парағының мысалы."}
+},
+{
+  num:12,
+  title:"ЖИ арқылы мұғалімнің күнделікті жұмысын жеңілдету",
+  sections:{
+    def:`<p>ЖИ мұғалімнің оқыту-тәрбие үдерісінен тыс, әкімшілік және коммуникациялық жұмысын да айтарлықтай жеңілдетеді.</p>`,
+    full:`<p>ЖИ-мен жылдам дайындауға болатын материалдар: <b>ата-анаға хабарлама</b> (сыпайы, нақты тон), <b>оқушыға кері байланыс</b> (нақты, дамытушы), <b>сабақ жоспары, тапсырма, тест, бағалау</b> (алдыңғы модульдерде қаралды), <b>рефлексия</b> сұрақтары, жалпы <b>мәтін мен құжат</b> жобалары, жаңа <b>идея</b> іздеу, <b>сынып сағаты</b> және <b>іс-шара жоспары</b>. Әр жағдайда рөл мен аудиторияны (ата-ана, оқушы, әкімшілік) нақты көрсету — тонды дұрыс баптайды.</p>`,
+    terms:`<ul><li><b>Ресми хат</b></li><li><b>Дамытушы кері байланыс</b></li><li><b>Іс-шара жоспары</b></li></ul>`,
+    how:`<p>Тапсырманың түрін (хат, кері байланыс, жоспар) және аудиторияны нақты айтасыз → ЖИ сол жанрға сай тон мен құрылымда мәтін дайындайды → сіз аты-жөн, нақты дерек сияқты жеке ақпаратты қолмен қосасыз.</p>`,
+    why:`<p>Күнделікті ұсақ, бірақ көп уақыт алатын жазба жұмыстарын (хат, кері байланыс) автоматтандыру мұғалімге сабаққа дайындалуға көбірек уақыт қалдырады.</p>`,
+    example:`<p>Мұғалім сабаққа қатыспай қалған оқушының ата-анасына сыпайы, нақты іс-әрекетті сұрайтын хатты 1 минутта дайындайды.</p>`,
+    prompt:`<div class="prompt-block"><b>Дайын prompt (ата-анаға хабарлама):</b><pre>Сен — сыныпта мұғалімсің.
+Оқушы [жағдай, мысалы: 3 күн сабаққа
+дайын келмеді] себебінен ата-анаға
+сыпайы, бірақ нақты хабарлама жаз.
+Тон: сыпайы, айыптаусыз, ынтымақтастыққа
+шақыратын. Көлемі: 4-5 сөйлем.</pre></div>`,
+    promptExplain:`<ul><li><b>«айыптаусыз»</b> — ата-анамен қарым-қатынасты сақтайтын тонды нақты сұрайды</li><li><b>«ынтымақтастыққа шақыратын»</b> — хаттың мақсатын шешім іздеуге бағыттайды</li></ul>`,
+    practice:`<p>Бір сабаққа қажетті материалдардың барлығын (жоспар, тапсырма, тест, хабарлама) ЖИ көмегімен дайындаңыз.</p>`,
+    steps:`<ol><li>Бір нақты сабақты таңдаңыз</li><li>4-модуль promptымен жоспар жасаңыз</li><li>5 және 6-модуль promptымен тапсырма мен тест жасаңыз</li><li>Осы модульдің promptымен қажетті хабарламаны дайындаңыз</li></ol>`,
+    result:`<p>Бір сабаққа қажетті барлық материал бір отырыста дайын болады.</p>`,
+    mistakes:`<ul><li>Жеке деректерді (аты-жөн, нақты күн) ЖИ-ге толық сеніп қалдыру — оны әрдайым өзіңіз тексеріп қосыңыз</li><li>Тонды нақтыламай, тым қатаң немесе тым бейресми хат алу</li></ul>`,
+    summary:`<p>ЖИ мұғалімнің әкімшілік-коммуникациялық жүктемесін азайтады, бірақ жеке деректер мен түпкі тонды мұғалім бақылауда ұстайды.</p>`,
+    selfcheck:`<ul><li>Тон мен аудиторияны нақтылаудың неге маңызды екенін түсіндіре аласыз ба?</li><li>Бір сабаққа толық материал жинағын дайындап көрдіңіз бе?</li></ul>`
+  },
+  photo:{label:"[ФОТО]",desc:"ЖИ дайындаған ата-анаға арналған хабарлама мысалы."}
+},
+{
+  num:13,
+  title:"ЖИ-ді әртүрлі пәндерде қолдану",
+  sections:{
+    def:`<p>Бұл модуль — жалпы принциптерді нақты пән бойынша қолдану картасы: әр пән үшін анықтама, нақты қолдану, дайын prompt, практика және нәтиже.</p>`,
+    full:`<p><b>Математика:</b> есеп шығару қадамдарын түсіндіру, деңгейлік есептер, қате талдау.<br>
+    <b>Физика/Химия:</b> құбылысты күнделікті мысалмен түсіндіру, тәжірибе сипаттамасы, формула логикасын жеңілдету.<br>
+    <b>Биология:</b> процестерді (фотосинтез, тыныс алу) схема+мәтінмен түсіндіру.<br>
+    <b>Информатика:</b> код түсіндіру, алгоритм логикасын жаттығумен көрсету.<br>
+    <b>Қазақ тілі/әдебиеті:</b> шығарма талдау сұрақтары, мәтін бейімдеу, шығармашылық жазу тапсырмалары.<br>
+    <b>Ағылшын/орыс тілі:</b> диалог үлгілері, грамматика жаттығулары, сөздік байыту.<br>
+    <b>Тарих/география:</b> оқиға/аймақ туралы сұрақ-жауап, карта сипаттамасы, себеп-салдар кестесі.<br>
+    <b>Бастауыш сынып:</b> ойын түрінде тапсырма, қысқа әрі көрнекі түсіндірме.</p>`,
+    terms:`<ul><li><b>Пәндік бейімдеу</b></li><li><b>Пәнаралық байланыс</b></li></ul>`,
+    how:`<p>Әр пән үшін бұрынғы модульдердегі promptтарды (сабақ жоспары, тапсырма, тест, мәтін, сурет) сол пәннің мазмұнына толтырып қолданасыз — формула өзгермейді, тек мазмұн ауысады.</p>`,
+    why:`<p>Мұғалім өз пәнінің нақты мысалын көргенде, жалпы теорияны қалай өз сабағына көшіретінін анық түсінеді.</p>`,
+    example:`<p>Информатика мұғалімі циклдің қалай жұмыс істейтінін 5-сынып оқушысына «бір іс-әрекетті бірнеше рет қайталау» мысалымен (мысалы, «10 рет секіру») түсіндіретін промпт жасайды.</p>`,
+    prompt:`<div class="prompt-block"><b>Дайын пәнаралық prompt қалыбы:</b><pre>Сен — [нақты пән] мұғалімісің.
+"[тақырып]" ұғымын [сынып] оқушысына
+осы пәнге тән нақты мысалмен түсіндір,
+содан кейін сол тақырыпқа 3 деңгейлі
+тапсырма қос.</pre></div>`,
+    promptExplain:`<ul><li><b>«осы пәнге тән нақты мысал»</b> — жалпы емес, пән ерекшелігіне сай ассоциация жасатады</li><li><b>«3 деңгейлі тапсырма қос»</b> — 5-модульдегі әдісті бір promptқа біріктіреді</li></ul>`,
+    practice:`<p>Өз пәніңіз бойынша: анықтама → нақты қолдану → дайын prompt → практика → нәтиже тізбегін толық орындаңыз.</p>`,
+    steps:`<ol><li>Өз пәніңізді жоғарыдағы тізімнен тауып, соған сай мысал оқыңыз</li><li>Пәнаралық prompt қалыбын өз тақырыбыңызға толтырыңыз</li><li>Нәтижені алып, сыныпта қолдануға дайындаңыз</li></ol>`,
+    result:`<p>Өз пәніңізге бейімделген, дайын түсіндірме+тапсырма жиынтығы.</p>`,
+    mistakes:`<ul><li>Басқа пәннің мысалын өз пәніне тікелей көшіру — контекст сай келмейді</li><li>Пән ерекшелігін (мысалы, тілдік пәндегі шығармашылық еркіндік пен нақты ғылымдағы дәлдік талабы) ескермеу</li></ul>`,
+    summary:`<p>Бұрынғы модульдердегі промпт формулалары кез келген пәнге бейімделеді — өзгеретіні тек мазмұн мен нақты пәндік мысал.</p>`,
+    selfcheck:`<ul><li>Өз пәніңізге сай нақты мысал ойлап таба аласыз ба?</li><li>Пәнаралық prompt қалыбын қолданып көрдіңіз бе?</li></ul>`
+  },
+  photo:{label:"[ФОТО]",desc:"Әр түрлі пәндерге бейімделген promptтардың салыстырмалы кестесі."}
+},
+{
+  num:14,
+  title:"ЖИ + интерактивті сабақ",
+  sections:{
+    def:`<p>Интерактивті тапсырма — оқушының тек оқып қана қоймай, белсенді әрекет ететін (басу, таңдау, сүйреу, жауап беру) тапсырма түрі.</p>`,
+    full:`<p>Түрлері: <b>викторина</b> (тест форматындағы ойын), <b>ойын</b> (ұпай, деңгей бар тапсырма), <b>карточка</b> (термин-анықтама сәйкестендіру), <b>симуляция</b> (процесті модельдеу, мысалы химиялық реакция), <b>интерактивті тест</b> (дереу нәтиже көрсететін), <b>оқушының өзіндік жұмысы</b> (өз қарқынымен орындайтын тапсырма). ЖИ көмегімен қарапайым HTML негізінде оқу веб-бетін (мысалы, викторина беті) жасауға да болады — бұл код жазуды білмейтін мұғалімге де қолжетімді.</p>`,
+    terms:`<ul><li><b>Интерактивтілік</b></li><li><b>Симуляция</b></li><li><b>Гамификация</b></li></ul>`,
+    how:`<p>Тақырып пен интерактив түрін (викторина, карточка т.б.) бересіз → ЖИ сұрақ-жауап мазмұнын құрастырады → қажет болса, осы мазмұнды қарапайым веб-бетке (HTML) айналдырып беруін сұрайсыз.</p>`,
+    why:`<p>Белсенді қатысу оқушының есте сақтауын арттырады; интерактивті тапсырма сабақты жандандырады және дереу кері байланыс береді.</p>`,
+    example:`<p>Ағылшын тілі мұғалімі жаңа сөздерге арналған сәйкестендіру карточкаларының мазмұнын (сөз-аударма жұбы) ЖИ-ден алып, сыныпта ойын түрінде өткізеді.</p>`,
+    prompt:`<div class="prompt-block"><b>Дайын prompt:</b><pre>Сен — [пән] мұғалімісің.
+"[тақырып]" бойынша 10 сұрақтан тұратын
+интерактивті викторина мазмұнын жаса:
+сұрақ, 4 жауап нұсқасы, дұрыс жауап,
+әр дұрыс/қате жауапқа қысқа түсініктеме.</pre></div>`,
+    promptExplain:`<ul><li><b>«әр дұрыс/қате жауапқа қысқа түсініктеме»</b> — дереу кері байланыс беретін интерактив үшін міндетті элемент</li></ul>`,
+    practice:`<p>Бір тақырыпқа интерактивті тапсырма (викторина немесе карточка) жасаңыз.</p>`,
+    steps:`<ol><li>Тақырыпты promptқа қойыңыз</li><li>Сұрақ-жауап мазмұнын алыңыз</li><li>Сыныпта ауызша ойын түрінде немесе қарапайым қағаз карточкамен өткізіңіз</li><li>Мүмкіндік болса, ЖИ-ден осы мазмұнды веб-бетке айналдыруын сұраңыз</li></ol>`,
+    result:`<p>Сыныпта бірден қолдануға дайын, ұпай/түсініктемесі бар интерактивті тапсырма.</p>`,
+    mistakes:`<ul><li>Түсініктемесіз жауап беру — оқушы неге қате екенін білмей қалады</li><li>Барлық сұрақты бір қиындықта қалдыру — ынтаны төмендетеді</li></ul>`,
+    summary:`<p>ЖИ интерактивті тапсырманың мазмұнын жылдам дайындайды, оны сыныпта ойын, карточка немесе қарапайым веб-бет түрінде қолдануға болады.</p>`,
+    selfcheck:`<ul><li>Интерактивті тапсырманың 6 түрін атай аласыз ба?</li><li>Бір викторина жасап көрдіңіз бе?</li></ul>`
+  },
+  photo:{label:"[ФОТО]",desc:"Сыныпта қолданылған интерактивті викторинаның мысалы."}
+},
+{
+  num:15,
+  title:"Қауіпсіздік + қорытынды жоба",
+  sections:{
+    def:`<p><b>Галлюцинация</b> — ЖИ-дің шындыққа сай келмейтін, бірақ сенімді естілетін ақпаратты дұрыс ретінде беруі. Бұл ЖИ-мен жұмыстағы ең маңызды қауіп.</p>`,
+    full:`<p>ЖИ дереу, күні, дәйексөзді ойдан шығаруы мүмкін — сондықтан <b>ақпаратты тексеру</b> міндетті: нақты сан, күн, дәйексөз әрдайым сенімді дереккөзбен салыстырылуы керек. <b>Дербес мәліметтер</b> (оқушының толық аты-жөні, туған күні, отбасы жағдайы) ЖИ чатқа енгізілмеуі керек — бұл <b>оқушының жеке ақпаратын қорғау</b> принципі. <b>Академиялық адалдық</b> — оқушыға ЖИ-ді дайын үй тапсырмасын жазатын құрал ретінде емес, оқу құралы (түсіндіру, жаттығу, тексеру) ретінде пайдалануды үйрету. ЖИ — дайын жауап көзі емес, сыни тұрғыдан бағаланатын көмекші.</p>`,
+    terms:`<ul><li><b>Галлюцинация</b></li><li><b>Дербес мәлімет</b></li><li><b>Академиялық адалдық</b></li><li><b>Сыни тұрғыдан бағалау</b></li></ul>`,
+    how:`<p>ЖИ жауабындағы әр нақты фактіні (сан, күн, дәйексөз, есім) сабаққа қолданбас бұрын басқа дереккөзбен тексересіз; оқушыға ЖИ-мен жұмыс ережесін (не үшін пайдалануға болады, не үшін болмайды) түсіндіресіз.</p>`,
+    why:`<p>Тексерілмеген ақпарат сыныпқа қате білім таратуы мүмкін; дербес мәлімет ағып кетсе, оқушы қауіпсіздігіне қатер төндіреді. Мұғалімнің сыни көзқарасы — ЖИ қолданудың міндетті бөлігі.</p>`,
+    example:`<p>Мұғалім ЖИ-ден алынған тарихи фактіні сабаққа қолданбас бұрын оқулықпен немесе сенімді сайтпен салыстырып тексереді, тек содан кейін ғана оқушыға айтады.</p>`,
+    prompt:`<div class="prompt-block"><b>Дайын prompt (қорытынды жоба үшін):</b><pre>Сен — [пән] мұғалімісің. [Сынып] сыныбына
+"[тақырып]" бойынша толық сабақ дайында:
+1) сабақ жоспары, 2) теориялық түсіндірме,
+3) 3 деңгейлі тапсырма, 4) 10 тест сұрағы,
+5) бағалау рубрикасы, 6) 8 слайдтық
+презентация құрылымы, 7) 3 оқу суретінің
+prompt-ы, 8) 30 секундтық видео сценарийі,
+9) интерактивті викторина, 10) оқушыға
+кері байланыс үлгісі.</pre></div>`,
+    promptExplain:`<ul><li>Prompt курстың барлық 1-14 модульдегі промпт түрлерін бір тапсырмаға біріктіреді</li><li>Нөмірленген тізім — ЖИ-ден әр бөлікті бөлек, толық жауап алуды қамтамасыз етеді</li></ul>`,
+    practice:`<p>Өз пәнінен толық бір сабақты жоғарыдағы 10 бөлікпен дайындаңыз — бұл курстың қорытынды жобасы.</p>`,
+    steps:`<ol><li>Бір нақты тақырып пен сыныпты таңдаңыз</li><li>Жоғарыдағы қорытынды promptты толтырып жіберіңіз (немесе әр бөлікті бөлек, 4-14 модуль promptтарымен жасаңыз)</li><li>Әр бөлікті осы модульдегі принцип бойынша тексеріңіз: фактілер дұрыс па, дербес мәлімет жоқ па</li><li>Дайын жинақты бір құжатқа/презентацияға жинаңыз</li><li>Сабақта қолданып, нәтижесін бағалаңыз</li></ol>`,
+    result:`<p>Бір тақырыпқа арналған, барлық құрал түрін қамтитын, тексерілген, толық сабақ жинағы — курстың түпкі нәтижесі.</p>`,
+    mistakes:`<ul><li>Фактілерді тексермей тікелей сыныпқа беру</li><li>Оқушының жеке деректерін ЖИ чатқа енгізу</li><li>ЖИ-ді сынып жұмысын толық алмастыратын құрал деп қабылдау</li></ul>`,
+    summary:`<p>ЖИ қуатты көмекші, бірақ галлюцинация мен дербес мәлімет қаупін білетін, сыни тұрғыда тексеретін мұғалім ғана оны қауіпсіз әрі тиімді пайдаланады.</p>`,
+    selfcheck:`<ul><li>Галлюцинация деген не, оны қалай анықтайсыз?</li><li>Қорытынды жобаңызды толық орындап, тексердіңіз бе?</li></ul>`
+  },
+  photo:{label:"[ФОТО]",desc:"Тексерілген және тексерілмеген ЖИ жауабының салыстырмалы мысалы."}
+}
+];
+
+
+const ILLUSTRATIONS = {
+1: `<svg viewBox="0 0 640 200" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="120" cy="100" r="34" fill="none" stroke="var(--teal)" stroke-width="2.5"/>
+  <text x="120" y="106" text-anchor="middle" font-family="Lora,serif" font-size="13" fill="var(--ink)">ЖИ</text>
+  <g stroke="var(--line)" stroke-width="2">
+    <line x1="154" y1="80" x2="260" y2="48"/>
+    <line x1="154" y1="100" x2="260" y2="100"/>
+    <line x1="154" y1="120" x2="260" y2="152"/>
+  </g>
+  <g fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2">
+    <rect x="260" y="30" width="130" height="36" rx="4"/>
+    <rect x="260" y="82" width="130" height="36" rx="4"/>
+    <rect x="260" y="134" width="130" height="36" rx="4"/>
+  </g>
+  <text x="325" y="53" text-anchor="middle" font-size="11" fill="var(--ink)">Мәтін жазу</text>
+  <text x="325" y="105" text-anchor="middle" font-size="11" fill="var(--ink)">Сұраққа жауап</text>
+  <text x="325" y="157" text-anchor="middle" font-size="11" fill="var(--ink)">Түсіндіру</text>
+  <g stroke="var(--line)" stroke-width="2">
+    <line x1="390" y1="48" x2="470" y2="100"/>
+    <line x1="390" y1="100" x2="470" y2="100"/>
+    <line x1="390" y1="152" x2="470" y2="100"/>
+  </g>
+  <circle cx="500" cy="100" r="30" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="2"/>
+  <text x="500" y="105" text-anchor="middle" font-size="20" fill="var(--teal)">✎</text>
+</svg>`,
+2: `<svg viewBox="0 0 640 200" xmlns="http://www.w3.org/2000/svg">
+  <rect x="60" y="24" width="520" height="152" rx="10" fill="var(--paper)" stroke="var(--line)" stroke-width="2"/>
+  <rect x="60" y="24" width="520" height="26" rx="10" fill="var(--ink)"/>
+  <circle cx="80" cy="37" r="4" fill="var(--accent)"/>
+  <circle cx="95" cy="37" r="4" fill="var(--teal)"/>
+  <circle cx="110" cy="37" r="4" fill="var(--line)"/>
+  <rect x="84" y="66" width="230" height="16" rx="8" fill="var(--teal-soft)"/>
+  <rect x="84" y="90" width="170" height="16" rx="8" fill="var(--teal-soft)"/>
+  <rect x="330" y="120" width="230" height="16" rx="8" fill="var(--accent-soft)"/>
+  <rect x="410" y="144" width="150" height="16" rx="8" fill="var(--accent-soft)"/>
+  <text x="84" y="78" font-size="10" fill="var(--ink-soft)">Сіз: тапсырма жазасыз</text>
+  <text x="416" y="132" font-size="10" fill="var(--ink-soft)">ЖИ: жауап береді</text>
+</svg>`,
+3: `<svg viewBox="0 0 640 200" xmlns="http://www.w3.org/2000/svg">
+  <g font-family="Inter,sans-serif" font-size="12" text-anchor="middle" fill="var(--ink)">
+  <rect x="20"  y="80" width="88" height="46" rx="4" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="1.5"/>
+  <text x="64" y="107">Рөл</text>
+  <rect x="120" y="80" width="88" height="46" rx="4" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>
+  <text x="164" y="107">Контекст</text>
+  <rect x="220" y="80" width="88" height="46" rx="4" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="1.5"/>
+  <text x="264" y="107">Тапсырма</text>
+  <rect x="320" y="80" width="88" height="46" rx="4" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>
+  <text x="364" y="107">Талап</text>
+  <rect x="420" y="80" width="88" height="46" rx="4" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="1.5"/>
+  <text x="464" y="107">Формат</text>
+  <rect x="520" y="80" width="98" height="46" rx="4" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>
+  <text x="569" y="107">Шектеу</text>
+  </g>
+  <g stroke="var(--ink-soft)" stroke-width="1.5">
+    <line x1="108" y1="103" x2="120" y2="103"/><line x1="208" y1="103" x2="220" y2="103"/>
+    <line x1="308" y1="103" x2="320" y2="103"/><line x1="408" y1="103" x2="420" y2="103"/>
+    <line x1="508" y1="103" x2="520" y2="103"/>
+  </g>
+  <text x="320" y="45" text-anchor="middle" font-size="13" fill="var(--ink-soft)" font-style="italic">Жақсы prompt формуласы</text>
+</svg>`,
+4: `<svg viewBox="0 0 640 200" xmlns="http://www.w3.org/2000/svg">
+  <rect x="180" y="24" width="280" height="156" rx="6" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
+  <rect x="180" y="24" width="280" height="28" fill="var(--ink)"/>
+  <text x="320" y="43" text-anchor="middle" font-size="12" fill="var(--paper)" font-family="Lora,serif">Сабақ жоспары</text>
+  <g stroke="var(--line)" stroke-width="1.5">
+    <line x1="200" y1="70" x2="440" y2="70"/>
+    <line x1="200" y1="92" x2="440" y2="92"/>
+    <line x1="200" y1="114" x2="440" y2="114"/>
+    <line x1="200" y1="136" x2="440" y2="136"/>
+    <line x1="200" y1="158" x2="440" y2="158"/>
+  </g>
+  <rect x="200" y="62" width="70" height="12" fill="var(--teal-soft)"/>
+  <rect x="200" y="84" width="90" height="12" fill="var(--accent-soft)"/>
+  <rect x="200" y="106" width="60" height="12" fill="var(--teal-soft)"/>
+  <rect x="200" y="128" width="100" height="12" fill="var(--accent-soft)"/>
+  <rect x="200" y="150" width="75" height="12" fill="var(--teal-soft)"/>
+</svg>`,
+5: `<svg viewBox="0 0 640 200" xmlns="http://www.w3.org/2000/svg">
+  <g stroke="var(--ink-soft)" stroke-width="2" fill="none"><line x1="60" y1="170" x2="580" y2="170"/></g>
+  <rect x="90"  y="130" width="80" height="40" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="2"/>
+  <rect x="220" y="95"  width="80" height="75" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/>
+  <rect x="350" y="55"  width="80" height="115" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="2"/>
+  <rect x="480" y="30"  width="80" height="140" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/>
+  <text x="130" y="185" text-anchor="middle" font-size="10.5" fill="var(--ink-soft)">Репродуктивті</text>
+  <text x="260" y="185" text-anchor="middle" font-size="10.5" fill="var(--ink-soft)">Қолдану</text>
+  <text x="390" y="185" text-anchor="middle" font-size="10.5" fill="var(--ink-soft)">Талдау</text>
+  <text x="520" y="185" text-anchor="middle" font-size="10.5" fill="var(--ink-soft)">Шығармашылық</text>
+</svg>`,
+6: `<svg viewBox="0 0 640 200" xmlns="http://www.w3.org/2000/svg">
+  <rect x="70" y="30" width="500" height="140" rx="6" fill="var(--paper)" stroke="var(--line)" stroke-width="2"/>
+  <text x="94" y="58" font-size="12" fill="var(--ink)" font-weight="600">1. Судың химиялық формуласы қандай?</text>
+  <g font-size="11" fill="var(--ink-soft)">
+    <circle cx="100" cy="80" r="6" fill="none" stroke="var(--teal)" stroke-width="2"/>
+    <text x="114" y="84">H₂O</text>
+    <circle cx="100" cy="102" r="6" fill="var(--teal)"/>
+    <text x="114" y="106" fill="var(--teal)" font-weight="700">CO₂ ✓</text>
+    <circle cx="260" cy="80" r="6" fill="none" stroke="var(--line)" stroke-width="2"/>
+    <text x="274" y="84">O₂</text>
+    <circle cx="260" cy="102" r="6" fill="none" stroke="var(--line)" stroke-width="2"/>
+    <text x="274" y="106">NaCl</text>
+  </g>
+  <line x1="94" y1="122" x2="546" y2="122" stroke="var(--line)" stroke-width="1"/>
+  <text x="94" y="145" font-size="10.5" fill="var(--accent)">Дескриптор: 70-100% — барлық негізгі формуланы дұрыс анықтайды</text>
+</svg>`,
+7: `<svg viewBox="0 0 640 200" xmlns="http://www.w3.org/2000/svg">
+  <g stroke="var(--line)" stroke-width="1.5">
+  <rect x="60" y="30" width="150" height="140" rx="4" fill="var(--paper)"/>
+  <rect x="245" y="30" width="150" height="140" rx="4" fill="var(--paper)"/>
+  <rect x="430" y="30" width="150" height="140" rx="4" fill="var(--paper)"/>
+  </g>
+  <text x="135" y="20" text-anchor="middle" font-size="10.5" fill="var(--teal)">Қарапайым</text>
+  <text x="320" y="20" text-anchor="middle" font-size="10.5" fill="var(--ink-soft)">Стандарт</text>
+  <text x="505" y="20" text-anchor="middle" font-size="10.5" fill="var(--accent)">Күрделі</text>
+  <g fill="var(--teal-soft)"><rect x="76" y="48" width="118" height="8"/><rect x="76" y="64" width="90" height="8"/><rect x="76" y="80" width="105" height="8"/></g>
+  <g fill="var(--line)"><rect x="261" y="48" width="118" height="8"/><rect x="261" y="64" width="118" height="8"/><rect x="261" y="80" width="70" height="8"/><rect x="261" y="96" width="100" height="8"/></g>
+  <g fill="var(--accent-soft)"><rect x="446" y="48" width="118" height="8"/><rect x="446" y="64" width="118" height="8"/><rect x="446" y="80" width="118" height="8"/><rect x="446" y="96" width="118" height="8"/><rect x="446" y="112" width="80" height="8"/></g>
+</svg>`,
+8: `<svg viewBox="0 0 640 200" xmlns="http://www.w3.org/2000/svg">
+  <rect x="240" y="70" width="220" height="130" rx="4" fill="var(--paper)" stroke="var(--line)" stroke-width="2"/>
+  <rect x="220" y="50" width="220" height="130" rx="4" fill="var(--paper)" stroke="var(--line)" stroke-width="2"/>
+  <rect x="200" y="30" width="220" height="130" rx="4" fill="var(--paper-raised)" stroke="var(--ink)" stroke-width="2.5"/>
+  <rect x="200" y="30" width="220" height="24" fill="var(--teal)"/>
+  <text x="310" y="47" text-anchor="middle" font-size="11" fill="#fff">Тақырып слайды</text>
+  <rect x="216" y="68" width="70" height="10" fill="var(--accent-soft)"/>
+  <rect x="216" y="86" width="130" height="10" fill="var(--accent-soft)"/>
+  <rect x="216" y="104" width="95" height="10" fill="var(--accent-soft)"/>
+  <rect x="330" y="70" width="72" height="60" rx="3" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="1.5"/>
+</svg>`,
+9: `<svg viewBox="0 0 640 200" xmlns="http://www.w3.org/2000/svg">
+  <rect x="220" y="30" width="200" height="140" rx="6" fill="var(--paper)" stroke="var(--ink)" stroke-width="2.5"/>
+  <circle cx="270" cy="70" r="14" fill="var(--accent)"/>
+  <path d="M235 150 L285 95 L320 125 L350 100 L405 150 Z" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="1.5"/>
+  <g stroke="var(--accent)" stroke-width="2">
+    <line x1="120" y1="60" x2="150" y2="70"/>
+    <line x1="120" y1="100" x2="150" y2="100"/>
+    <line x1="120" y1="140" x2="150" y2="130"/>
+  </g>
+  <text x="60" y="64" font-size="10.5" fill="var(--ink-soft)">Объект</text>
+  <text x="60" y="104" font-size="10.5" fill="var(--ink-soft)">Стиль</text>
+  <text x="60" y="144" font-size="10.5" fill="var(--ink-soft)">Композиция</text>
+  <text x="320" y="185" text-anchor="middle" font-size="10.5" fill="var(--ink-soft)" font-style="italic">image prompt → оқу схемасы</text>
+</svg>`,
+10: `<svg viewBox="0 0 640 200" xmlns="http://www.w3.org/2000/svg">
+  <g stroke="var(--ink)" stroke-width="2">
+  <rect x="60"  y="50" width="140" height="90" rx="4" fill="var(--paper)"/>
+  <rect x="250" y="50" width="140" height="90" rx="4" fill="var(--paper)"/>
+  <rect x="440" y="50" width="140" height="90" rx="4" fill="var(--paper)"/>
+  </g>
+  <polygon points="120,80 120,110 145,95" fill="var(--teal)"/>
+  <circle cx="320" cy="95" r="18" fill="none" stroke="var(--accent)" stroke-width="3"/>
+  <line x1="332" y1="107" x2="345" y2="120" stroke="var(--accent)" stroke-width="3"/>
+  <path d="M480 110 Q510 60 540 110" fill="none" stroke="var(--teal)" stroke-width="3"/>
+  <text x="130" y="164" text-anchor="middle" font-size="10.5" fill="var(--ink-soft)">1-кадр</text>
+  <text x="320" y="164" text-anchor="middle" font-size="10.5" fill="var(--ink-soft)">2-кадр</text>
+  <text x="510" y="164" text-anchor="middle" font-size="10.5" fill="var(--ink-soft)">3-кадр</text>
+  <g stroke="var(--line)" stroke-width="2"><line x1="200" y1="95" x2="250" y2="95"/><line x1="390" y1="95" x2="440" y2="95"/></g>
+</svg>`,
+11: `<svg viewBox="0 0 640 200" xmlns="http://www.w3.org/2000/svg">
+  <g stroke="var(--line)" stroke-width="2"><line x1="60" y1="170" x2="580" y2="170"/></g>
+  <g>
+    <circle cx="140" cy="60" r="18" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="2"/>
+    <rect x="120" y="82" width="40" height="70" rx="6" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="2"/>
+    <text x="140" y="186" text-anchor="middle" font-size="10.5" fill="var(--ink-soft)">Қолдау қажет</text>
+  </g>
+  <g>
+    <circle cx="320" cy="50" r="18" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/>
+    <rect x="300" y="72" width="40" height="80" rx="6" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/>
+    <text x="320" y="186" text-anchor="middle" font-size="10.5" fill="var(--ink-soft)">Орта деңгей</text>
+  </g>
+  <g>
+    <circle cx="500" cy="38" r="18" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="2"/>
+    <rect x="480" y="60" width="40" height="92" rx="6" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="2"/>
+    <text x="500" y="186" text-anchor="middle" font-size="10.5" fill="var(--ink-soft)">Күшті оқушы</text>
+  </g>
+</svg>`,
+12: `<svg viewBox="0 0 640 200" xmlns="http://www.w3.org/2000/svg">
+  <rect x="180" y="55" width="280" height="100" rx="6" fill="var(--paper)" stroke="var(--ink)" stroke-width="2.5"/>
+  <polyline points="180,55 320,120 460,55" fill="none" stroke="var(--ink)" stroke-width="2.5"/>
+  <circle cx="500" cy="60" r="22" fill="var(--accent)"/>
+  <text x="500" y="66" text-anchor="middle" font-size="16" fill="#fff">✓</text>
+  <text x="320" y="180" text-anchor="middle" font-size="11" fill="var(--ink-soft)">Ата-анаға хабарлама · Кері байланыс · Күнделікті құжат</text>
+</svg>`,
+13: `<svg viewBox="0 0 640 200" xmlns="http://www.w3.org/2000/svg">
+  <g font-family="Inter,sans-serif" font-size="11" text-anchor="middle" fill="var(--ink)">
+  <rect x="40"  y="40" width="110" height="60" rx="4" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="1.5"/>
+  <text x="95" y="75">∑ Математика</text>
+  <rect x="170" y="40" width="110" height="60" rx="4" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>
+  <text x="225" y="75">🧬 Биология</text>
+  <rect x="300" y="40" width="110" height="60" rx="4" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="1.5"/>
+  <text x="355" y="75">Тарих</text>
+  <rect x="430" y="40" width="90" height="60" rx="4" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>
+  <text x="475" y="75">Тіл</text>
+  <rect x="40"  y="115" width="110" height="60" rx="4" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>
+  <text x="95" y="150">Информатика</text>
+  <rect x="170" y="115" width="110" height="60" rx="4" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="1.5"/>
+  <text x="225" y="150">Химия</text>
+  <rect x="300" y="115" width="110" height="60" rx="4" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>
+  <text x="355" y="150">География</text>
+  <rect x="430" y="115" width="90" height="60" rx="4" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="1.5"/>
+  <text x="475" y="150">Бастауыш</text>
+  </g>
+</svg>`,
+14: `<svg viewBox="0 0 640 200" xmlns="http://www.w3.org/2000/svg">
+  <rect x="180" y="30" width="280" height="140" rx="8" fill="var(--paper)" stroke="var(--ink)" stroke-width="2.5"/>
+  <circle cx="240" cy="75" r="22" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="2"/>
+  <text x="240" y="81" text-anchor="middle" font-size="13" fill="var(--teal)">A</text>
+  <rect x="285" y="60" width="130" height="16" rx="8" fill="var(--accent-soft)"/>
+  <rect x="285" y="82" width="90" height="16" rx="8" fill="var(--accent-soft)"/>
+  <g stroke="var(--line)" stroke-width="1.5"><line x1="200" y1="115" x2="440" y2="115"/></g>
+  <circle cx="220" cy="140" r="12" fill="var(--teal)"/>
+  <text x="220" y="145" text-anchor="middle" font-size="11" fill="#fff">1</text>
+  <circle cx="260" cy="140" r="12" fill="var(--accent)"/>
+  <text x="260" y="145" text-anchor="middle" font-size="11" fill="#fff">2</text>
+  <circle cx="300" cy="140" r="12" fill="none" stroke="var(--line)" stroke-width="2"/>
+  <text x="300" y="145" text-anchor="middle" font-size="11" fill="var(--ink-soft)">3</text>
+  <text x="360" y="145" font-size="11" fill="var(--ink-soft)">ұпай: 20</text>
+</svg>`,
+15: `<svg viewBox="0 0 640 200" xmlns="http://www.w3.org/2000/svg">
+  <path d="M320 20 L400 45 V105 C400 150 365 175 320 190 C275 175 240 150 240 105 V45 Z"
+        fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="2.5"/>
+  <path d="M290 100 l20 20 l40 -45" fill="none" stroke="var(--teal)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <g font-size="11" fill="var(--ink-soft)">
+    <text x="120" y="70">Тексерілген факт ✓</text>
+    <text x="120" y="95">Дербес мәлімет жоқ ✓</text>
+    <text x="440" y="70" fill="var(--accent)">Галлюцинация ✕</text>
+    <text x="440" y="95" fill="var(--accent)">Тексерілмеген дерек ✕</text>
+  </g>
+</svg>`
+};
+
+
+const SECTION_LABELS = [
+  ["def","Анықтама"],
+  ["full","Толық түсіндірме"],
+  ["terms","Негізгі терминдер"],
+  ["how","Қалай жұмыс істейді?"],
+  ["why","Мұғалімге не үшін қажет?"],
+  ["example","Нақты мысал"],
+  ["prompt","ЖИ-ге берілетін дайын prompt"],
+  ["promptExplain","Prompt-тың әр бөлігінің түсіндірмесі"],
+  ["practice","Практикалық тапсырма"],
+  ["steps","Практиканы орындау қадамдары"],
+  ["result","Күтілетін нәтиже"],
+  ["mistakes","Жиі кездесетін қателер"],
+  ["summary","Қысқа қорытынды"],
+  ["selfcheck","Өзін-өзі тексеру"]
+];
+
+let current = 1;
+let completed = {};
+
+function loadState(){
+  try{
+    const saved = localStorage.getItem('ai_course_progress');
+    if(saved){ completed = JSON.parse(saved) || {}; }
+  }catch(e){ completed = {}; }
+  try{
+    const last = localStorage.getItem('ai_course_last');
+    if(last){ current = parseInt(last,10) || 1; }
+  }catch(e){}
+}
+function saveState(){
+  try{ localStorage.setItem('ai_course_progress', JSON.stringify(completed)); }catch(e){}
+  try{ localStorage.setItem('ai_course_last', String(current)); }catch(e){}
+}
+
+function renderNav(){
+  const list = document.getElementById('navList');
+  list.innerHTML = '';
+  MODULES.forEach(m=>{
+    const li = document.createElement('li');
+    li.className = 'nav-item' + (m.num===current?' active':'') + (completed[m.num]?' done':'');
+    li.onclick = ()=>{ goTo(m.num); closeSidebar(); };
+    li.innerHTML = '<span class="nav-num">'+m.num+'</span><span>'+m.title+'</span>';
+    list.appendChild(li);
+  });
+  const doneCount = Object.keys(completed).filter(k=>completed[k]).length;
+  document.getElementById('progressText').textContent = doneCount + ' / 15';
+  document.getElementById('progressFill').style.width = Math.round(doneCount/15*100) + '%';
+}
+
+function esc(s){ return s; }
+
+function renderContent(){
+  const m = MODULES.find(x=>x.num===current);
+  const c = document.getElementById('content');
+  document.getElementById('crumb').textContent = 'Модуль ' + m.num + ' / 15';
+
+  let sectionsHtml = '';
+  SECTION_LABELS.forEach((pair, idx)=>{
+    const key = pair[0], label = pair[1];
+    let body = m.sections[key] || '';
+    sectionsHtml += '<div class="section-block">' +
+      '<div class="section-head"><span class="section-idx">'+(idx+1)+'.</span><span class="section-title">'+label+'</span></div>' +
+      '<div class="section-body">'+body+'</div>' +
+      '</div>';
+  });
+
+  // Admin-uploaded photo/video (if any) replaces the built-in illustration for this module.
+  // Default course visuals are untouched when no admin media has been uploaded.
+  const override = (typeof ADMIN_MEDIA !== 'undefined') ? ADMIN_MEDIA[m.num] : null;
+  let visualInner = ILLUSTRATIONS[m.num] || '';
+  if(override){
+    visualInner = override.media_type === 'video'
+      ? '<video src="'+override.media_url+'" controls style="width:100%;border-radius:4px;display:block;"></video>'
+      : '<img src="'+override.media_url+'" style="width:100%;border-radius:4px;display:block;" alt="">';
+  }
+  const mediaHtml = (visualInner && m.photo) ? (
+    '<div class="figure">' + visualInner +
+      '<div class="figure-caption"><span class="figure-tag">'+m.photo.label+'</span><span>'+m.photo.desc+'</span></div>' +
+    '</div>'
+  ) : '';
+
+  c.innerHTML =
+    '<div class="module-header">' +
+      '<div class="module-eyebrow">МОДУЛЬ ' + m.num + '</div>' +
+      '<h1 class="module-title">' + m.title + '</h1>' +
+    '</div>' +
+    mediaHtml +
+    sectionsHtml;
+
+  document.querySelectorAll('.prompt-block').forEach(block=>{
+    if(block.querySelector('.copy-btn')) return;
+    const btn = document.createElement('button');
+    btn.className = 'copy-btn';
+    btn.textContent = '📋 Көшіру';
+    btn.onclick = ()=>{
+      const pre = block.querySelector('pre');
+      const text = pre ? pre.textContent : block.textContent;
+      navigator.clipboard.writeText(text).then(()=>{
+        btn.textContent = '✓ Көшірілді';
+        btn.classList.add('copied');
+        setTimeout(()=>{ btn.textContent='📋 Көшіру'; btn.classList.remove('copied'); }, 1800);
+      }).catch(()=>{});
+    };
+    block.appendChild(btn);
+  });
+
+  document.getElementById('prevBtn').disabled = (current===1);
+  document.getElementById('nextBtn').textContent = current===15 ? 'Курс аяқталды ✓' : 'Келесі модуль →';
+  const doneBtn = document.getElementById('doneBtn');
+  doneBtn.classList.toggle('on', !!completed[current]);
+  doneBtn.textContent = completed[current] ? '✓ Аяқталды' : 'Аяқталды деп белгілеу';
+
+  window.scrollTo({top:0, behavior:'instant'});
+}
+
+function goTo(n){
+  current = n;
+  saveState();
+  renderNav();
+  renderContent();
+}
+function goPrev(){ if(current>1) goTo(current-1); }
+function goNext(){ if(current<15) goTo(current+1); }
+function toggleDone(){
+  completed[current] = !completed[current];
+  saveState();
+  renderNav();
+  renderContent();
+}
+function openSidebar(){
+  document.getElementById('sidebar').classList.add('open');
+  document.getElementById('overlay').classList.add('show');
+}
+function closeSidebar(){
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+}
+
+loadState();
+
+/* ============================================================
+   AUTH + ADMIN APPROVAL LAYER (added on top of the course above)
+   The 15-module course logic above this line is unchanged.
+   ============================================================ */
+
+// ---- 1. FILL THESE IN AFTER YOU CREATE YOUR SUPABASE PROJECT ----
+const SUPABASE_URL = "https://yepbijtgkkrqezrpjcoa.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InllcGJpanRna2tycWV6cnBqY29hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk2NjU1NTgsImV4cCI6MjEwNTI0MTU1OH0.gfbx7S7Tk8XM6jLeD8BUKZnWgVH2ieC3kVBoTkHPook";
+// -------------------------------------------------------------
+
+let supa = null;
+let CURRENT_PROFILE = null;
+let ADMIN_MEDIA = {}; // module_num -> {media_type, media_url}
+
+function supabaseReady(){
+  return SUPABASE_URL.indexOf('YOUR-PROJECT') === -1 && typeof window.supabase !== 'undefined';
+}
+
+function showAuthMsg(el, text, type){
+  el.textContent = text;
+  el.className = 'auth-msg show ' + (type || 'info');
+}
+function hideAuthMsg(el){ el.className = 'auth-msg'; }
+
+function switchAuthTab(which){
+  document.getElementById('tabLogin').classList.toggle('active', which==='login');
+  document.getElementById('tabRegister').classList.toggle('active', which==='register');
+  document.getElementById('loginForm').classList.toggle('hidden', which!=='login');
+  document.getElementById('registerForm').classList.toggle('hidden', which!=='register');
+  hideAuthMsg(document.getElementById('authMsg'));
+}
+
+function showScreen(name){
+  document.getElementById('authScreen').classList.toggle('hidden', name!=='auth');
+  document.getElementById('statusScreen').classList.toggle('hidden', name!=='status');
+  document.getElementById('adminScreen').classList.toggle('hidden', name!=='admin');
+  document.getElementById('appRoot').classList.toggle('hidden', name!=='course');
+}
+
+async function handleRegister(ev){
+  ev.preventDefault();
+  const msg = document.getElementById('authMsg');
+  hideAuthMsg(msg);
+  if(!supabaseReady()){
+    showAuthMsg(msg, 'Supabase әлі бапталмаған. SUPABASE_URL/SUPABASE_ANON_KEY мәндерін толтырыңыз.', 'error');
+    return false;
+  }
+  const name = document.getElementById('regName').value.trim();
+  const email = document.getElementById('regEmail').value.trim();
+  const pass = document.getElementById('regPassword').value;
+  const pass2 = document.getElementById('regPassword2').value;
+  if(pass !== pass2){
+    showAuthMsg(msg, 'Құпиясөздер сәйкес келмейді.', 'error');
+    return false;
+  }
+  const btn = document.getElementById('registerBtn');
+  btn.disabled = true;
+  const { data, error } = await supa.auth.signUp({
+    email: email,
+    password: pass,
+    options: { data: { full_name: name } }
+  });
+  btn.disabled = false;
+  if(error){
+    if(error.message && error.message.toLowerCase().indexOf('already registered') !== -1){
+      showAuthMsg(msg, 'Бұл email бұрын тіркелген. Кіру бетін пайдаланыңыз.', 'error');
+    } else if(error.message && error.message.toLowerCase().indexOf('password') !== -1 && error.message.toLowerCase().indexOf('least') !== -1){
+      showAuthMsg(msg, 'Құпиясөз кемінде 6 таңбадан тұруы керек.', 'error');
+    } else {
+      showAuthMsg(msg, error.message, 'error');
+    }
+    return false;
+  }
+  await supa.auth.signOut();
+  switchAuthTab('login');
+  showAuthMsg(document.getElementById('authMsg'),
+    'Тіркелу сәтті аяқталды. Әкімші аккаунтыңызды мақұлдағаннан кейін курсқа кіре аласыз.', 'info');
+  return false;
+}
+
+async function handleLogin(ev){
+  ev.preventDefault();
+  const msg = document.getElementById('authMsg');
+  hideAuthMsg(msg);
+  if(!supabaseReady()){
+    showAuthMsg(msg, 'Supabase әлі бапталмаған. SUPABASE_URL/SUPABASE_ANON_KEY мәндерін толтырыңыз.', 'error');
+    return false;
+  }
+  const email = document.getElementById('loginEmail').value.trim();
+  const pass = document.getElementById('loginPassword').value;
+  const btn = document.getElementById('loginBtn');
+  btn.disabled = true;
+  const { data, error } = await supa.auth.signInWithPassword({ email: email, password: pass });
+  btn.disabled = false;
+  if(error){
+    if(error.message && error.message.toLowerCase().indexOf('email not confirmed') !== -1){
+      showAuthMsg(msg, 'Email әлі расталмаған. Тіркелу кезінде жіберілген хатты тексеріңіз (немесе әкімші Supabase баптауынан "Confirm email" опциясын өшіруі керек).', 'error');
+    } else if(error.message && error.message.toLowerCase().indexOf('invalid login credentials') !== -1){
+      showAuthMsg(msg, 'Email немесе құпиясөз қате.', 'error');
+    } else {
+      showAuthMsg(msg, error.message, 'error');
+    }
+    return false;
+  }
+  await afterLogin();
+  return false;
+}
+
+async function handleLogout(){
+  if(supa) await supa.auth.signOut();
+  CURRENT_PROFILE = null;
+  showScreen('auth');
+  switchAuthTab('login');
+}
+
+async function fetchProfile(userId){
+  const { data, error } = await supa.from('profiles').select('*').eq('id', userId).single();
+  if(error) return null;
+  return data;
+}
+
+async function afterLogin(){
+  const { data: { user } } = await supa.auth.getUser();
+  if(!user){ showScreen('auth'); return; }
+  const profile = await fetchProfile(user.id);
+  CURRENT_PROFILE = profile;
+  if(!profile){
+    showScreen('auth');
+    return;
+  }
+  if(profile.status === 'approved'){
+    document.getElementById('courseSessionUser').textContent = profile.full_name + ' (' + profile.email + ')';
+    document.getElementById('adminPanelBtn').classList.toggle('hidden', !profile.is_admin);
+    await loadAdminMedia();
+    showScreen('course');
+    renderNav();
+    renderContent();
+  } else if(profile.status === 'rejected'){
+    document.getElementById('statusIcon').className = 'status-icon rejected';
+    document.getElementById('statusIcon').textContent = '✕';
+    document.getElementById('statusTitle').textContent = 'Қабылданбады';
+    document.getElementById('statusText').textContent = 'Өкінішке орай, аккаунтыңыз әкімші тарапынан қабылданбады. Қосымша ақпарат үшін курс ұйымдастырушысына хабарласыңыз.';
+    showScreen('status');
+  } else {
+    document.getElementById('statusIcon').className = 'status-icon pending';
+    document.getElementById('statusIcon').textContent = '⏳';
+    document.getElementById('statusTitle').textContent = 'Күтуде';
+    document.getElementById('statusText').textContent = 'Тіркелу сәтті аяқталды. Әкімші аккаунтыңызды мақұлдағаннан кейін курсқа кіре аласыз.';
+    showScreen('status');
+  }
+}
+
+// ---------- Admin Panel ----------
+function showAdminPanel(){
+  showScreen('admin');
+  document.getElementById('adminSessionUser').textContent = CURRENT_PROFILE ? (CURRENT_PROFILE.full_name + ' (админ)') : '';
+  loadAdminUsers();
+  populateMediaModuleSelect();
+  renderMediaList();
+}
+function showCourseFromAdmin(){
+  showScreen('course');
+  renderNav();
+  renderContent();
+}
+
+async function loadAdminUsers(){
+  const body = document.getElementById('adminUsersBody');
+  body.innerHTML = '<tr><td colspan="5">Жүктелуде…</td></tr>';
+  const { data, error } = await supa.from('profiles').select('*').order('created_at', {ascending:false});
+  if(error){
+    body.innerHTML = '<tr><td colspan="5">Қате: '+error.message+'</td></tr>';
+    return;
+  }
+  if(!data.length){
+    body.innerHTML = '<tr><td colspan="5">Қолданушы жоқ</td></tr>';
+    return;
+  }
+  body.innerHTML = data.map(u=>{
+    const date = new Date(u.created_at).toLocaleDateString('kk-KZ');
+    const badgeText = u.status==='pending' ? 'Күтуде' : (u.status==='approved' ? 'Мақұлданды' : 'Қабылданбады');
+    let actions = '';
+    if(u.status === 'pending'){
+      actions = '<button class="admin-action-btn approve-btn" onclick="approveUser(\''+u.id+'\')">Мақұлдау</button>' +
+                '<button class="admin-action-btn reject-btn" onclick="rejectUser(\''+u.id+'\')">Қабылдамау</button>';
+    } else {
+      actions = '<span style="color:var(--ink-soft);font-size:11.5px;">—</span>';
+    }
+    return '<tr>' +
+      '<td>'+u.full_name+'</td>' +
+      '<td>'+u.email+'</td>' +
+      '<td>'+date+'</td>' +
+      '<td><span class="badge '+u.status+'">'+badgeText+'</span></td>' +
+      '<td>'+actions+'</td>' +
+      '</tr>';
+  }).join('');
+}
+async function approveUser(id){
+  await supa.from('profiles').update({status:'approved'}).eq('id', id);
+  loadAdminUsers();
+}
+async function rejectUser(id){
+  await supa.from('profiles').update({status:'rejected'}).eq('id', id);
+  loadAdminUsers();
+}
+
+// ---------- Admin: per-module photo/video upload ----------
+function populateMediaModuleSelect(){
+  const sel = document.getElementById('mediaModuleSelect');
+  if(sel.options.length) return;
+  sel.innerHTML = MODULES.map(m=>'<option value="'+m.num+'">Модуль '+m.num+' — '+m.title+'</option>').join('');
+}
+async function loadAdminMedia(){
+  if(!supa) return;
+  const { data, error } = await supa.from('module_media').select('*');
+  if(error) return;
+  ADMIN_MEDIA = {};
+  (data||[]).forEach(row=>{ ADMIN_MEDIA[row.module_num] = row; });
+}
+function renderMediaList(){
+  const box = document.getElementById('mediaList');
+  const rows = Object.values(ADMIN_MEDIA);
+  if(!rows.length){ box.innerHTML = '<p style="color:var(--ink-soft);font-size:12.5px;">Әлі ешбір модульге медиа қосылмаған.</p>'; return; }
+  box.innerHTML = rows.sort((a,b)=>a.module_num-b.module_num).map(r=>{
+    const thumb = r.media_type==='video'
+      ? '<video class="media-thumb" src="'+r.media_url+'" muted></video>'
+      : '<img class="media-thumb" src="'+r.media_url+'">';
+    return '<div class="media-list-item"><span>'+thumb+' Модуль '+r.module_num+'</span>' +
+      '<button class="admin-action-btn reject-btn" onclick="removeModuleMedia('+r.module_num+')">Жою</button></div>';
+  }).join('');
+}
+async function handleMediaUpload(){
+  const msg = document.getElementById('mediaMsg');
+  hideAuthMsg(msg);
+  const moduleNum = parseInt(document.getElementById('mediaModuleSelect').value, 10);
+  const file = document.getElementById('mediaFileInput').files[0];
+  if(!file){ showAuthMsg(msg, 'Файлды таңдаңыз.', 'error'); return; }
+  const mediaType = file.type.startsWith('video') ? 'video' : 'image';
+  const path = 'module-' + moduleNum + '-' + Date.now() + '-' + file.name;
+  const { error: upErr } = await supa.storage.from('module-media').upload(path, file, { upsert:true });
+  if(upErr){ showAuthMsg(msg, 'Жүктеу қатесі: ' + upErr.message, 'error'); return; }
+  const { data: pub } = supa.storage.from('module-media').getPublicUrl(path);
+  const { error: dbErr } = await supa.from('module_media').upsert({
+    module_num: moduleNum, media_type: mediaType, media_url: pub.publicUrl, updated_at: new Date().toISOString()
+  });
+  if(dbErr){ showAuthMsg(msg, 'Сақтау қатесі: ' + dbErr.message, 'error'); return; }
+  showAuthMsg(msg, 'Сәтті жүктелді.', 'info');
+  await loadAdminMedia();
+  renderMediaList();
+}
+async function removeModuleMedia(moduleNum){
+  await supa.from('module_media').delete().eq('module_num', moduleNum);
+  await loadAdminMedia();
+  renderMediaList();
+}
+
+// ---------- Boot ----------
+async function initAuthLayer(){
+  if(!supabaseReady()){
+    showAuthMsg(document.getElementById('authMsg'),
+      'Курсты жариялаушы Supabase баптауын әлі аяқтаған жоқ (SUPABASE_URL / SUPABASE_ANON_KEY). Файл ішіндегі осы мәндерді толтырыңыз.', 'error');
+    showScreen('auth');
+    return;
+  }
+  supa = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  const { data: { session } } = await supa.auth.getSession();
+  if(session){
+    await afterLogin();
+  } else {
+    showScreen('auth');
+  }
+}
+initAuthLayer();
+
+</script>
+</body>
+</html>
